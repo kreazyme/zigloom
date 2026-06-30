@@ -59,6 +59,7 @@ The default shape is provider plus UI. Providers own state and actions; pages/wi
 
 ## Global Style
 
+- Before coding any user-facing UI, read `docs/design_guidelines.md` and follow its visual direction unless the user explicitly asks for a different style.
 - Define reusable colors, typography, spacing, and shape values in `lib/common/theme.dart` or nearby theme extensions.
 - Keep the game board visually centered and responsive.
 - Use stable board sizing with aspect ratios or constraints so cells do not shift during interaction.
