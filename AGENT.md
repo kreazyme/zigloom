@@ -44,6 +44,12 @@ When adding routes:
 - Add the `GoRoute` in `appRouter`.
 - Keep page widgets in `lib/pages/<feature>/<feature>_page.dart`.
 
+## Instructions
+
+- Alway follow the `.github/copilot-instructions.md` guidelines for Flutter development.
+- NEVER allow to edit .lock files or any other generated files.
+- Always use `fvm` to run Flutter commands
+
 ## App Architecture
 
 Keep the implementation simple and close to the current scaffold:
@@ -90,7 +96,7 @@ The default shape is provider plus UI. Providers own state and actions; pages/wi
 
 - Add English strings to `assets/i18n/locale_en.json`.
 - Add Vietnamese strings to `assets/i18n/locale_vi.json`.
-- Regenerate `slang` outputs after changing locale JSON.
+- Regenerate `fvm dart run slang` outputs after changing locale JSON.
 - Do not hard-code user-facing text in widgets unless it is temporary debugging text.
 
 ## Verification

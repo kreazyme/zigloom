@@ -29,6 +29,8 @@
 
 ## Flutter Best Practices
 
+- **Widgets:** Split large widgets into a file in `./../widgets/`. Use `StatelessWidget` unless state is needed.
+- **Providers:** Use provider if needed. Keep providers in `./../providers/`.
 - **Build Methods:** Keep pure and fast. No side effects. No network calls.
 - **Isolates:** Use `compute()` for heavy tasks like JSON parsing.
 - **Lists:** `ListView.builder` or `SliverList` for performance.
