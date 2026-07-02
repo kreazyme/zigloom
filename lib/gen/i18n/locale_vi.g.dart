@@ -38,6 +38,107 @@ class TranslationsVi with BaseTranslations<AppLocale, Translations> implements T
 
 	// Translations
 	@override String get hello => 'Xin chào';
+	@override late final _TranslationsHomeVi home = _TranslationsHomeVi._(_root);
+	@override late final _TranslationsSplashVi splash = _TranslationsSplashVi._(_root);
+	@override late final _TranslationsGameListVi gameList = _TranslationsGameListVi._(_root);
+	@override late final _TranslationsGameplayVi gameplay = _TranslationsGameplayVi._(_root);
+	@override late final _TranslationsPauseVi pause = _TranslationsPauseVi._(_root);
+}
+
+// Path: home
+class _TranslationsHomeVi implements TranslationsHomeEn {
+	_TranslationsHomeVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'ZIGLOOM';
+	@override String get subtitle => 'Câu đố logic ngoại tuyến';
+	@override String get settings => 'Cài đặt';
+	@override String get play => 'Chơi';
+	@override String get howToPlay => 'Cách chơi';
+	@override String get privacyPolicy => 'Chính sách bảo mật';
+	@override String get terms => 'Điều khoản';
+	@override String get solvedProgress => '{solved} / {total} đã giải';
+	@override String get nextPuzzle => 'Tiếp theo: Màn {number}';
+	@override String get readyToStart => 'Sẵn sàng bắt đầu';
+	@override String get puzzleNumber => 'Màn {number}';
+	@override String get puzzleOpen => 'Màn {number} đang mở';
+	@override String get inProgress => 'Màn {number} đang chơi';
+	@override String get allPuzzlesDone => 'Đã hoàn thành tất cả';
+	@override String get comingSoon => '{screen} sắp ra mắt';
+}
+
+// Path: splash
+class _TranslationsSplashVi implements TranslationsSplashEn {
+	_TranslationsSplashVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'ZIGLOOM';
+	@override String get subtitle => 'Câu đố logic ngoại tuyến';
+	@override String get loading => 'Đang tải';
+}
+
+// Path: gameList
+class _TranslationsGameListVi implements TranslationsGameListEn {
+	_TranslationsGameListVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Chọn màn';
+	@override String get back => 'Quay lại';
+	@override String get pauseDemo => 'Tạm dừng';
+	@override String get solvedProgress => '{solved} / {total} đã giải';
+	@override String get nextPuzzle => 'Tiếp: {number}';
+	@override String get ready => 'Màn {number} đã sẵn sàng';
+	@override String get puzzle => 'Màn {number}';
+	@override String get comingSoon => '{puzzle} sắp ra mắt';
+	@override String get loadFailed => 'Tải thất bại';
+	@override String get retry => 'Thử lại';
+}
+
+// Path: gameplay
+class _TranslationsGameplayVi implements TranslationsGameplayEn {
+	_TranslationsGameplayVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get puzzle => 'Màn {number}';
+	@override String get pause => 'Tạm dừng';
+	@override String get moves => '{count} nước';
+	@override String get nextClue => 'Tìm {number}';
+	@override String get invalidMove => 'Ô này làm đứt đường đi';
+	@override String get solved => 'Đã giải';
+	@override String get undo => 'Hoàn tác';
+	@override String get reset => 'Đặt lại';
+	@override String get settings => 'Cài đặt';
+	@override String get settingsComingSoon => 'Cài đặt sắp ra mắt';
+	@override String get loadFailed => 'Tải thất bại';
+	@override String get retry => 'Thử lại';
+}
+
+// Path: pause
+class _TranslationsPauseVi implements TranslationsPauseEn {
+	_TranslationsPauseVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get puzzle => 'Màn {number}';
+	@override String get paused => 'Tạm dừng';
+	@override String get resume => 'Tiếp tục';
+	@override String get reset => 'Đặt lại';
+	@override String get settings => 'Cài đặt';
+	@override String get returnHome => 'Về trang chủ';
+	@override String get resetQuestion => 'Đặt lại màn?';
+	@override String get resetDescription => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.';
+	@override String get resetPuzzle => 'Đặt lại màn';
+	@override String get cancel => 'Hủy';
+	@override String get comingSoon => '{action} sắp ra mắt';
 }
 
 /// The flat map containing all translations for locale <vi>.
@@ -49,6 +150,57 @@ extension on TranslationsVi {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'hello' => 'Xin chào',
+			'home.title' => 'ZIGLOOM',
+			'home.subtitle' => 'Câu đố logic ngoại tuyến',
+			'home.settings' => 'Cài đặt',
+			'home.play' => 'Chơi',
+			'home.howToPlay' => 'Cách chơi',
+			'home.privacyPolicy' => 'Chính sách bảo mật',
+			'home.terms' => 'Điều khoản',
+			'home.solvedProgress' => '{solved} / {total} đã giải',
+			'home.nextPuzzle' => 'Tiếp theo: Màn {number}',
+			'home.readyToStart' => 'Sẵn sàng bắt đầu',
+			'home.puzzleNumber' => 'Màn {number}',
+			'home.puzzleOpen' => 'Màn {number} đang mở',
+			'home.inProgress' => 'Màn {number} đang chơi',
+			'home.allPuzzlesDone' => 'Đã hoàn thành tất cả',
+			'home.comingSoon' => '{screen} sắp ra mắt',
+			'splash.title' => 'ZIGLOOM',
+			'splash.subtitle' => 'Câu đố logic ngoại tuyến',
+			'splash.loading' => 'Đang tải',
+			'gameList.title' => 'Chọn màn',
+			'gameList.back' => 'Quay lại',
+			'gameList.pauseDemo' => 'Tạm dừng',
+			'gameList.solvedProgress' => '{solved} / {total} đã giải',
+			'gameList.nextPuzzle' => 'Tiếp: {number}',
+			'gameList.ready' => 'Màn {number} đã sẵn sàng',
+			'gameList.puzzle' => 'Màn {number}',
+			'gameList.comingSoon' => '{puzzle} sắp ra mắt',
+			'gameList.loadFailed' => 'Tải thất bại',
+			'gameList.retry' => 'Thử lại',
+			'gameplay.puzzle' => 'Màn {number}',
+			'gameplay.pause' => 'Tạm dừng',
+			'gameplay.moves' => '{count} nước',
+			'gameplay.nextClue' => 'Tìm {number}',
+			'gameplay.invalidMove' => 'Ô này làm đứt đường đi',
+			'gameplay.solved' => 'Đã giải',
+			'gameplay.undo' => 'Hoàn tác',
+			'gameplay.reset' => 'Đặt lại',
+			'gameplay.settings' => 'Cài đặt',
+			'gameplay.settingsComingSoon' => 'Cài đặt sắp ra mắt',
+			'gameplay.loadFailed' => 'Tải thất bại',
+			'gameplay.retry' => 'Thử lại',
+			'pause.puzzle' => 'Màn {number}',
+			'pause.paused' => 'Tạm dừng',
+			'pause.resume' => 'Tiếp tục',
+			'pause.reset' => 'Đặt lại',
+			'pause.settings' => 'Cài đặt',
+			'pause.returnHome' => 'Về trang chủ',
+			'pause.resetQuestion' => 'Đặt lại màn?',
+			'pause.resetDescription' => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.',
+			'pause.resetPuzzle' => 'Đặt lại màn',
+			'pause.cancel' => 'Hủy',
+			'pause.comingSoon' => '{action} sắp ra mắt',
 			_ => null,
 		};
 	}

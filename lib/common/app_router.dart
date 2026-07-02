@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:example_template/pages/game_list/game_list_page.dart';
+import 'package:example_template/pages/gameplay/gameplay_page.dart';
 import 'package:example_template/pages/home/home_page.dart';
 import 'package:example_template/pages/onboarding/onboarding_page.dart';
+import 'package:example_template/pages/pause/pause_page.dart';
 import 'package:example_template/pages/policy/policy_page.dart';
 import 'package:example_template/pages/splash/splash_page.dart';
 import 'package:example_template/pages/terms/terms_page.dart';
@@ -14,8 +17,13 @@ class AppRoutePaths {
   static const splash = '/';
   static const onboarding = '/onboarding';
   static const home = '/home';
+  static const gameList = '/game-list';
+  static const gameplay = '/gameplay/:puzzleNumber';
+  static const pause = '/pause';
   static const policy = '/policy';
   static const terms = '/terms';
+
+  static String gameplayPuzzle(int puzzleNumber) => '/gameplay/$puzzleNumber';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -33,6 +41,23 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutePaths.home,
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.gameList,
+      builder: (context, state) => const GameListPage(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.gameplay,
+      builder: (context, state) {
+        final puzzleNumber =
+            int.tryParse(state.pathParameters['puzzleNumber'] ?? '') ?? 13;
+
+        return GameplayPage(puzzleNumber: puzzleNumber);
+      },
+    ),
+    GoRoute(
+      path: AppRoutePaths.pause,
+      builder: (context, state) => const PausePage(),
     ),
     GoRoute(
       path: AppRoutePaths.policy,

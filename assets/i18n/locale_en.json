@@ -1,3 +1,64 @@
 {
-    "hello": "Hello"
+  "hello": "Hello",
+  "home": {
+    "title": "ZIGLOOM",
+    "subtitle": "Offline logic puzzles",
+    "settings": "Settings",
+    "play": "Play",
+    "howToPlay": "How To Play",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms",
+    "solvedProgress": "{solved} / {total} solved",
+    "nextPuzzle": "Next: Puzzle {number}",
+    "readyToStart": "Ready to start",
+    "puzzleNumber": "Puzzle {number}",
+    "puzzleOpen": "Puzzle {number} open",
+    "inProgress": "Puzzle {number} in progress",
+    "allPuzzlesDone": "All puzzles done",
+    "comingSoon": "{screen} is coming soon"
+  },
+  "splash": {
+    "title": "ZIGLOOM",
+    "subtitle": "Offline logic puzzles",
+    "loading": "Loading"
+  },
+  "gameList": {
+    "title": "Select Level",
+    "back": "Back",
+    "pauseDemo": "Pause",
+    "solvedProgress": "{solved} / {total} solved",
+    "nextPuzzle": "Next: {number}",
+    "ready": "Puzzle {number} is ready",
+    "puzzle": "Puzzle {number}",
+    "comingSoon": "{puzzle} is coming soon",
+    "loadFailed": "Load Failed",
+    "retry": "Retry"
+  },
+  "gameplay": {
+    "puzzle": "Puzzle {number}",
+    "pause": "Pause",
+    "moves": "Moves {count}",
+    "nextClue": "Find {number}",
+    "invalidMove": "That square breaks the path",
+    "solved": "Solved",
+    "undo": "Undo",
+    "reset": "Reset",
+    "settings": "Settings",
+    "settingsComingSoon": "Settings is coming soon",
+    "loadFailed": "Load Failed",
+    "retry": "Retry"
+  },
+  "pause": {
+    "puzzle": "Puzzle {number}",
+    "paused": "Paused",
+    "resume": "Resume",
+    "reset": "Reset",
+    "settings": "Settings",
+    "returnHome": "Return Home",
+    "resetQuestion": "Reset puzzle?",
+    "resetDescription": "Your current path for Puzzle {number} will be cleared.",
+    "resetPuzzle": "Reset Puzzle",
+    "cancel": "Cancel",
+    "comingSoon": "{action} is coming soon"
+  }
 }
