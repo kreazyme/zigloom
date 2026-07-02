@@ -26,11 +26,7 @@ class GameplayHeader extends StatelessWidget {
 
     return Row(
       children: [
-        ArcadeCircleButton(
-          tooltip: context.t.gameplay.pause,
-          icon: Icons.pause_rounded,
-          onPressed: onPause,
-        ),
+        _TimerBadge(label: timer),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -42,7 +38,11 @@ class GameplayHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        _TimerBadge(label: timer),
+        ArcadeCircleButton(
+          tooltip: context.t.gameplay.pause,
+          icon: Icons.pause_rounded,
+          onPressed: onPause,
+        ),
       ],
     );
   }

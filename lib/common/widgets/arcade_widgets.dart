@@ -120,12 +120,14 @@ class ArcadeGlossyButton extends StatefulWidget {
     required this.onPressed,
     this.isSecondary = false,
     this.height,
+    this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final bool isSecondary;
   final double? height;
+  final IconData? icon;
 
   @override
   State<ArcadeGlossyButton> createState() => _ArcadeGlossyButtonState();
@@ -180,13 +182,29 @@ class _ArcadeGlossyButtonState extends State<ArcadeGlossyButton> {
                 width: double.infinity,
                 height: widget.height ?? (widget.isSecondary ? 54 : 60),
                 child: Center(
-                  child: Text(
-                    widget.label,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontSize: widget.isSecondary ? 15 : 18,
-                      color: AppTheme.white,
-                      shadows: isEnabled ? gameTheme.textShadow : null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (widget.icon != null) ...[
+                          Icon(widget.icon, color: AppTheme.white, size: 23),
+                          const SizedBox(width: 10),
+                        ],
+                        Flexible(
+                          child: Text(
+                            widget.label,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              fontSize: widget.isSecondary ? 15 : 18,
+                              color: AppTheme.white,
+                              shadows: isEnabled ? gameTheme.textShadow : null,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

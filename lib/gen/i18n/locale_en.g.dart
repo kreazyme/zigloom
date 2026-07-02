@@ -49,6 +49,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsGameListEn gameList = TranslationsGameListEn._(_root);
 	late final TranslationsGameplayEn gameplay = TranslationsGameplayEn._(_root);
 	late final TranslationsPauseEn pause = TranslationsPauseEn._(_root);
+	late final TranslationsHowToPlayEn howToPlay = TranslationsHowToPlayEn._(_root);
 }
 
 // Path: home
@@ -194,6 +195,9 @@ class TranslationsGameplayEn {
 	/// en: 'Reset'
 	String get reset => 'Reset';
 
+	/// en: 'How To Play'
+	String get howToPlay => 'How To Play';
+
 	/// en: 'Settings'
 	String get settings => 'Settings';
 
@@ -224,8 +228,8 @@ class TranslationsPauseEn {
 	/// en: 'Resume'
 	String get resume => 'Resume';
 
-	/// en: 'Reset'
-	String get reset => 'Reset';
+	/// en: 'Replay'
+	String get replay => 'Replay';
 
 	/// en: 'Settings'
 	String get settings => 'Settings';
@@ -233,20 +237,71 @@ class TranslationsPauseEn {
 	/// en: 'Return Home'
 	String get returnHome => 'Return Home';
 
-	/// en: 'Reset puzzle?'
-	String get resetQuestion => 'Reset puzzle?';
+	/// en: 'Replay puzzle?'
+	String get replayQuestion => 'Replay puzzle?';
 
 	/// en: 'Your current path for Puzzle {number} will be cleared.'
-	String get resetDescription => 'Your current path for Puzzle {number} will be cleared.';
+	String get replayDescription => 'Your current path for Puzzle {number} will be cleared.';
 
-	/// en: 'Reset Puzzle'
-	String get resetPuzzle => 'Reset Puzzle';
+	/// en: 'Replay Puzzle'
+	String get replayPuzzle => 'Replay Puzzle';
 
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
 	/// en: '{action} is coming soon'
 	String get comingSoon => '{action} is coming soon';
+}
+
+// Path: howToPlay
+class TranslationsHowToPlayEn {
+	TranslationsHowToPlayEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'How To Play'
+	String get title => 'How To Play';
+
+	/// en: 'Back'
+	String get back => 'Back';
+
+	/// en: 'Fill the board with one continuous path.'
+	String get intro => 'Fill the board with one continuous path.';
+
+	/// en: 'Rules'
+	String get rulesTitle => 'Rules';
+
+	/// en: 'Start at 1.'
+	String get ruleStart => 'Start at 1.';
+
+	/// en: 'Connect numbers in order.'
+	String get ruleOrder => 'Connect numbers in order.';
+
+	/// en: 'Move up, down, left, or right.'
+	String get ruleMove => 'Move up, down, left, or right.';
+
+	/// en: 'Use every square exactly once.'
+	String get ruleCover => 'Use every square exactly once.';
+
+	/// en: 'Avoid'
+	String get avoidTitle => 'Avoid';
+
+	/// en: 'Gaps'
+	String get avoidGaps => 'Gaps';
+
+	/// en: 'Repeated squares'
+	String get avoidRepeats => 'Repeated squares';
+
+	/// en: 'Diagonal moves'
+	String get avoidDiagonal => 'Diagonal moves';
+
+	/// en: 'Visiting a later number early'
+	String get avoidEarlyNumber => 'Visiting a later number early';
+
+	/// en: 'Back To Puzzle'
+	String get backToPuzzle => 'Back To Puzzle';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -294,6 +349,7 @@ extension on Translations {
 			'gameplay.solved' => 'Solved',
 			'gameplay.undo' => 'Undo',
 			'gameplay.reset' => 'Reset',
+			'gameplay.howToPlay' => 'How To Play',
 			'gameplay.settings' => 'Settings',
 			'gameplay.settingsComingSoon' => 'Settings is coming soon',
 			'gameplay.loadFailed' => 'Load Failed',
@@ -301,14 +357,28 @@ extension on Translations {
 			'pause.puzzle' => 'Puzzle {number}',
 			'pause.paused' => 'Paused',
 			'pause.resume' => 'Resume',
-			'pause.reset' => 'Reset',
+			'pause.replay' => 'Replay',
 			'pause.settings' => 'Settings',
 			'pause.returnHome' => 'Return Home',
-			'pause.resetQuestion' => 'Reset puzzle?',
-			'pause.resetDescription' => 'Your current path for Puzzle {number} will be cleared.',
-			'pause.resetPuzzle' => 'Reset Puzzle',
+			'pause.replayQuestion' => 'Replay puzzle?',
+			'pause.replayDescription' => 'Your current path for Puzzle {number} will be cleared.',
+			'pause.replayPuzzle' => 'Replay Puzzle',
 			'pause.cancel' => 'Cancel',
 			'pause.comingSoon' => '{action} is coming soon',
+			'howToPlay.title' => 'How To Play',
+			'howToPlay.back' => 'Back',
+			'howToPlay.intro' => 'Fill the board with one continuous path.',
+			'howToPlay.rulesTitle' => 'Rules',
+			'howToPlay.ruleStart' => 'Start at 1.',
+			'howToPlay.ruleOrder' => 'Connect numbers in order.',
+			'howToPlay.ruleMove' => 'Move up, down, left, or right.',
+			'howToPlay.ruleCover' => 'Use every square exactly once.',
+			'howToPlay.avoidTitle' => 'Avoid',
+			'howToPlay.avoidGaps' => 'Gaps',
+			'howToPlay.avoidRepeats' => 'Repeated squares',
+			'howToPlay.avoidDiagonal' => 'Diagonal moves',
+			'howToPlay.avoidEarlyNumber' => 'Visiting a later number early',
+			'howToPlay.backToPuzzle' => 'Back To Puzzle',
 			_ => null,
 		};
 	}

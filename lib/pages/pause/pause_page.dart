@@ -39,7 +39,7 @@ class _PausePageState extends State<PausePage> {
                               setState(() => _isConfirmingReset = false),
                           onConfirm: () {
                             setState(() => _isConfirmingReset = false);
-                            _showComingSoon(context, strings.resetPuzzle);
+                            _showComingSoon(context, strings.replayPuzzle);
                           },
                         )
                       : _PauseMenu(
@@ -113,32 +113,32 @@ class _PauseMenu extends StatelessWidget {
         const SizedBox(height: 34),
         ArcadeGlossyButton(
           label: strings.resume.toUpperCase(),
+          icon: Icons.play_arrow_rounded,
           onPressed: onResume,
         ),
         const SizedBox(height: 16),
         ArcadeGlossyButton(
-          label: strings.reset.toUpperCase(),
+          label: strings.replay.toUpperCase(),
+          icon: Icons.replay_rounded,
           isSecondary: true,
           onPressed: onReset,
         ),
-        const SizedBox(height: 16),
-        ArcadeGlossyButton(
-          label: strings.settings.toUpperCase(),
-          isSecondary: true,
-          onPressed: onSettings,
-        ),
-        const SizedBox(height: 26),
-        TextButton(
-          onPressed: onHome,
-          child: Text(
-            strings.returnHome,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppTheme.white,
-              shadows: Theme.of(
-                context,
-              ).extension<ZigloomGameTheme>()?.textShadow,
+        const SizedBox(height: 22),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ArcadeCircleButton(
+              tooltip: strings.settings,
+              icon: Icons.settings_rounded,
+              onPressed: onSettings,
             ),
-          ),
+            const SizedBox(width: 18),
+            ArcadeCircleButton(
+              tooltip: strings.returnHome,
+              icon: Icons.home_rounded,
+              onPressed: onHome,
+            ),
+          ],
         ),
       ],
     );
@@ -169,10 +169,10 @@ class _ResetConfirm extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ArcadeTitle(text: strings.resetQuestion, fontSize: 38),
+          ArcadeTitle(text: strings.replayQuestion, fontSize: 38),
           const SizedBox(height: 18),
           Text(
-            strings.resetDescription.replaceAll(
+            strings.replayDescription.replaceAll(
               '{number}',
               puzzleNumber.toString(),
             ),
@@ -186,21 +186,16 @@ class _ResetConfirm extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           ArcadeGlossyButton(
-            label: strings.resetPuzzle.toUpperCase(),
+            label: strings.replayPuzzle.toUpperCase(),
+            icon: Icons.replay_rounded,
             onPressed: onConfirm,
           ),
           const SizedBox(height: 14),
-          TextButton(
+          ArcadeGlossyButton(
+            label: strings.cancel.toUpperCase(),
+            icon: Icons.close_rounded,
+            isSecondary: true,
             onPressed: onCancel,
-            child: Text(
-              strings.cancel,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppTheme.white,
-                shadows: Theme.of(
-                  context,
-                ).extension<ZigloomGameTheme>()?.textShadow,
-              ),
-            ),
           ),
         ],
       ),

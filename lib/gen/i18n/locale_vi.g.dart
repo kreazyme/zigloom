@@ -43,6 +43,7 @@ class TranslationsVi with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _TranslationsGameListVi gameList = _TranslationsGameListVi._(_root);
 	@override late final _TranslationsGameplayVi gameplay = _TranslationsGameplayVi._(_root);
 	@override late final _TranslationsPauseVi pause = _TranslationsPauseVi._(_root);
+	@override late final _TranslationsHowToPlayVi howToPlay = _TranslationsHowToPlayVi._(_root);
 }
 
 // Path: home
@@ -115,6 +116,7 @@ class _TranslationsGameplayVi implements TranslationsGameplayEn {
 	@override String get solved => 'Đã giải';
 	@override String get undo => 'Hoàn tác';
 	@override String get reset => 'Đặt lại';
+	@override String get howToPlay => 'Cách chơi';
 	@override String get settings => 'Cài đặt';
 	@override String get settingsComingSoon => 'Cài đặt sắp ra mắt';
 	@override String get loadFailed => 'Tải thất bại';
@@ -131,14 +133,37 @@ class _TranslationsPauseVi implements TranslationsPauseEn {
 	@override String get puzzle => 'Màn {number}';
 	@override String get paused => 'Tạm dừng';
 	@override String get resume => 'Tiếp tục';
-	@override String get reset => 'Đặt lại';
+	@override String get replay => 'Chơi lại';
 	@override String get settings => 'Cài đặt';
 	@override String get returnHome => 'Về trang chủ';
-	@override String get resetQuestion => 'Đặt lại màn?';
-	@override String get resetDescription => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.';
-	@override String get resetPuzzle => 'Đặt lại màn';
+	@override String get replayQuestion => 'Chơi lại màn?';
+	@override String get replayDescription => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.';
+	@override String get replayPuzzle => 'Chơi lại màn';
 	@override String get cancel => 'Hủy';
 	@override String get comingSoon => '{action} sắp ra mắt';
+}
+
+// Path: howToPlay
+class _TranslationsHowToPlayVi implements TranslationsHowToPlayEn {
+	_TranslationsHowToPlayVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Cách chơi';
+	@override String get back => 'Quay lại';
+	@override String get intro => 'Lấp đầy bàn bằng một đường đi liên tục.';
+	@override String get rulesTitle => 'Luật chơi';
+	@override String get ruleStart => 'Bắt đầu từ 1.';
+	@override String get ruleOrder => 'Nối các số theo thứ tự.';
+	@override String get ruleMove => 'Đi lên, xuống, trái hoặc phải.';
+	@override String get ruleCover => 'Dùng mỗi ô đúng một lần.';
+	@override String get avoidTitle => 'Tránh';
+	@override String get avoidGaps => 'Bỏ trống ô';
+	@override String get avoidRepeats => 'Lặp lại ô';
+	@override String get avoidDiagonal => 'Đi chéo';
+	@override String get avoidEarlyNumber => 'Đi vào số sau quá sớm';
+	@override String get backToPuzzle => 'Quay lại màn chơi';
 }
 
 /// The flat map containing all translations for locale <vi>.
@@ -186,6 +211,7 @@ extension on TranslationsVi {
 			'gameplay.solved' => 'Đã giải',
 			'gameplay.undo' => 'Hoàn tác',
 			'gameplay.reset' => 'Đặt lại',
+			'gameplay.howToPlay' => 'Cách chơi',
 			'gameplay.settings' => 'Cài đặt',
 			'gameplay.settingsComingSoon' => 'Cài đặt sắp ra mắt',
 			'gameplay.loadFailed' => 'Tải thất bại',
@@ -193,14 +219,28 @@ extension on TranslationsVi {
 			'pause.puzzle' => 'Màn {number}',
 			'pause.paused' => 'Tạm dừng',
 			'pause.resume' => 'Tiếp tục',
-			'pause.reset' => 'Đặt lại',
+			'pause.replay' => 'Chơi lại',
 			'pause.settings' => 'Cài đặt',
 			'pause.returnHome' => 'Về trang chủ',
-			'pause.resetQuestion' => 'Đặt lại màn?',
-			'pause.resetDescription' => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.',
-			'pause.resetPuzzle' => 'Đặt lại màn',
+			'pause.replayQuestion' => 'Chơi lại màn?',
+			'pause.replayDescription' => 'Đường đi hiện tại của Màn {number} sẽ bị xóa.',
+			'pause.replayPuzzle' => 'Chơi lại màn',
 			'pause.cancel' => 'Hủy',
 			'pause.comingSoon' => '{action} sắp ra mắt',
+			'howToPlay.title' => 'Cách chơi',
+			'howToPlay.back' => 'Quay lại',
+			'howToPlay.intro' => 'Lấp đầy bàn bằng một đường đi liên tục.',
+			'howToPlay.rulesTitle' => 'Luật chơi',
+			'howToPlay.ruleStart' => 'Bắt đầu từ 1.',
+			'howToPlay.ruleOrder' => 'Nối các số theo thứ tự.',
+			'howToPlay.ruleMove' => 'Đi lên, xuống, trái hoặc phải.',
+			'howToPlay.ruleCover' => 'Dùng mỗi ô đúng một lần.',
+			'howToPlay.avoidTitle' => 'Tránh',
+			'howToPlay.avoidGaps' => 'Bỏ trống ô',
+			'howToPlay.avoidRepeats' => 'Lặp lại ô',
+			'howToPlay.avoidDiagonal' => 'Đi chéo',
+			'howToPlay.avoidEarlyNumber' => 'Đi vào số sau quá sớm',
+			'howToPlay.backToPuzzle' => 'Quay lại màn chơi',
 			_ => null,
 		};
 	}

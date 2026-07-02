@@ -96,7 +96,8 @@ class _GameplayContent extends ConsumerWidget {
                           onReset: controller.canReset
                               ? controller.reset
                               : null,
-                          onSettings: () => _showSettingsPlaceholder(context),
+                          onHowToPlay: () =>
+                              _openHowToPlay(context, controller),
                         ),
                       ],
                     ),
@@ -121,12 +122,15 @@ class _GameplayContent extends ConsumerWidget {
     }
   }
 
-  void _showSettingsPlaceholder(BuildContext context) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(content: Text(context.t.gameplay.settingsComingSoon)),
-      );
+  Future<void> _openHowToPlay(
+    BuildContext context,
+    GameplayController controller,
+  ) async {
+    controller.pauseTimer();
+    await context.push('${AppRoutePaths.howToPlay}?from=gameplay');
+    if (context.mounted && !controller.isSolved) {
+      controller.startTimer();
+    }
   }
 
   String _formatTime(Duration duration) {

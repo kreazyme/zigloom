@@ -115,7 +115,6 @@ class GameplayController extends ChangeNotifier {
     final isValid =
         scenario.contains(point) &&
         point.isAdjacentTo(last) &&
-        !scenario.hasWallBetween(last, point) &&
         !_path.contains(point) &&
         _isNumberMoveAllowed(point);
 
@@ -208,8 +207,7 @@ class GameplayController extends ChangeNotifier {
 
       if (index > 0) {
         final previous = restoredPath[index - 1];
-        if (!point.isAdjacentTo(previous) ||
-            scenario.hasWallBetween(previous, point)) {
+        if (!point.isAdjacentTo(previous)) {
           return false;
         }
       }

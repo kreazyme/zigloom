@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:example_template/pages/game_list/game_list_page.dart';
 import 'package:example_template/pages/gameplay/gameplay_page.dart';
 import 'package:example_template/pages/home/home_page.dart';
+import 'package:example_template/pages/how_to_play/how_to_play_page.dart';
 import 'package:example_template/pages/onboarding/onboarding_page.dart';
 import 'package:example_template/pages/pause/pause_page.dart';
 import 'package:example_template/pages/policy/policy_page.dart';
@@ -20,6 +21,7 @@ class AppRoutePaths {
   static const gameList = '/game-list';
   static const gameplay = '/gameplay/:puzzleNumber';
   static const pause = '/pause';
+  static const howToPlay = '/how-to-play';
   static const policy = '/policy';
   static const terms = '/terms';
 
@@ -58,6 +60,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutePaths.pause,
       builder: (context, state) => const PausePage(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.howToPlay,
+      builder: (context, state) {
+        final fromGameplay = state.uri.queryParameters['from'] == 'gameplay';
+
+        return HowToPlayPage(fromGameplay: fromGameplay);
+      },
     ),
     GoRoute(
       path: AppRoutePaths.policy,

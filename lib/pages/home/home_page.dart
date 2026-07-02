@@ -92,7 +92,7 @@ class HomePage extends StatelessWidget {
                               label: strings.howToPlay.toUpperCase(),
                               isSecondary: true,
                               onPressed: () =>
-                                  _showComingSoon(context, strings.howToPlay),
+                                  context.push(AppRoutePaths.howToPlay),
                             ),
                           ],
                         ),

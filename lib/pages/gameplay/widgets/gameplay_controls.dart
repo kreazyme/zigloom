@@ -7,12 +7,12 @@ class GameplayControls extends StatelessWidget {
     super.key,
     required this.onUndo,
     required this.onReset,
-    required this.onSettings,
+    required this.onHowToPlay,
   });
 
   final VoidCallback? onUndo;
   final VoidCallback? onReset;
-  final VoidCallback onSettings;
+  final VoidCallback onHowToPlay;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,9 @@ class GameplayControls extends StatelessWidget {
         ),
         const SizedBox(width: 18),
         ArcadeCircleButton(
-          tooltip: strings.settings,
-          icon: Icons.settings_rounded,
-          onPressed: onSettings,
+          tooltip: strings.howToPlay,
+          icon: Icons.help_rounded,
+          onPressed: onHowToPlay,
         ),
       ],
     );

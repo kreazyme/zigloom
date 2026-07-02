@@ -44,78 +44,6 @@ class GridPoint implements Comparable<GridPoint> {
 }
 
 @immutable
-class GridEdge {
-  GridEdge(GridPoint first, GridPoint second)
-    : assert(first.isAdjacentTo(second)),
-      a = first.compareTo(second) <= 0 ? first : second,
-      b = first.compareTo(second) <= 0 ? second : first;
-
-  final GridPoint a;
-  final GridPoint b;
-
-  @override
-  bool operator ==(Object other) {
-    return other is GridEdge && other.a == a && other.b == b;
-  }
-
-  @override
-  int get hashCode => Object.hash(a, b);
-}
-
-enum WallOrientation { horizontal, vertical }
-
-@immutable
-class WallSegment {
-  const WallSegment({
-    required this.orientation,
-    required this.row,
-    required this.column,
-  });
-
-  factory WallSegment.parse(String value) {
-    final parts = value.split('_');
-    if (parts.length != 3) {
-      throw FormatException('Invalid wall segment', value);
-    }
-
-    final orientation = switch (parts[0]) {
-      'H' => WallOrientation.horizontal,
-      'V' => WallOrientation.vertical,
-      _ => throw FormatException('Invalid wall orientation', value),
-    };
-
-    return WallSegment(
-      orientation: orientation,
-      row: int.parse(parts[1]),
-      column: int.parse(parts[2]),
-    );
-  }
-
-  final WallOrientation orientation;
-  final int row;
-  final int column;
-
-  GridEdge get edge {
-    final from = GridPoint(row, column);
-    final to = switch (orientation) {
-      WallOrientation.horizontal => GridPoint(row + 1, column),
-      WallOrientation.vertical => GridPoint(row, column + 1),
-    };
-
-    return GridEdge(from, to);
-  }
-
-  String get key {
-    final prefix = switch (orientation) {
-      WallOrientation.horizontal => 'H',
-      WallOrientation.vertical => 'V',
-    };
-
-    return '${prefix}_${row}_$column';
-  }
-}
-
-@immutable
 class GameScenarioMetadata {
   const GameScenarioMetadata({
     required this.checkpointCount,
@@ -155,7 +83,6 @@ class GameScenario {
     required this.rowCount,
     required this.columnCount,
     required this.numberPositions,
-    required this.wallPositions,
     required this.solutionPath,
     required this.metadata,
   });
@@ -170,10 +97,6 @@ class GameScenario {
         .toList(growable: false);
     final numberPositions = (json['numberPositions'] as Map<String, dynamic>)
         .map((key, value) => MapEntry(GridPoint.parse(key), value as int));
-    final wallPositions = (json['wallPositions'] as List<dynamic>? ?? [])
-        .cast<String>()
-        .map(WallSegment.parse)
-        .toList(growable: false);
     final metadataJson =
         (json['metadata'] as Map<String, dynamic>?) ?? const {};
     final metadata = GameScenarioMetadata.fromJson(metadataJson);
@@ -183,23 +106,18 @@ class GameScenario {
             .map(GridPoint.parse)
             .toList(growable: false);
     final solutionPath = metadataSolutionPath ?? path;
-    final allPoints = [
-      ...path,
-      ...numberPositions.keys,
-      ...solutionPath,
-      for (final wall in wallPositions) wall.edge.a,
-      for (final wall in wallPositions) wall.edge.b,
-    ];
+    final rowCount = json['rowCount'] as int?;
+    final columnCount = json['columnCount'] as int?;
+    final allPoints = [...path, ...numberPositions.keys, ...solutionPath];
     final maxRow = allPoints.map((point) => point.row).fold<int>(0, _max);
     final maxColumn = allPoints.map((point) => point.column).fold<int>(0, _max);
 
     return GameScenario(
       id: json['id'] as String,
       puzzleNumber: puzzleNumber,
-      rowCount: maxRow + 1,
-      columnCount: maxColumn + 1,
+      rowCount: rowCount ?? maxRow + 1,
+      columnCount: columnCount ?? maxColumn + 1,
       numberPositions: numberPositions,
-      wallPositions: wallPositions,
       solutionPath: solutionPath,
       metadata: metadata,
     );
@@ -210,7 +128,6 @@ class GameScenario {
   final int rowCount;
   final int columnCount;
   final Map<GridPoint, int> numberPositions;
-  final List<WallSegment> wallPositions;
   final List<GridPoint> solutionPath;
   final GameScenarioMetadata metadata;
 
@@ -241,15 +158,6 @@ class GameScenario {
         point.row < rowCount &&
         point.column >= 0 &&
         point.column < columnCount;
-  }
-
-  bool hasWallBetween(GridPoint from, GridPoint to) {
-    if (!from.isAdjacentTo(to)) {
-      return false;
-    }
-
-    final edge = GridEdge(from, to);
-    return wallPositions.any((wall) => wall.edge == edge);
   }
 }
 

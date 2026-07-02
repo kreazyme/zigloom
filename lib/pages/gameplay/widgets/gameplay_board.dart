@@ -106,16 +106,6 @@ class GameplayBoard extends StatelessWidget {
                           );
                         },
                       ),
-                      IgnorePointer(
-                        child: CustomPaint(
-                          size: Size.square(boardSize),
-                          painter: _WallPainter(
-                            walls: scenario.wallPositions,
-                            cellSize: cellSize,
-                            gap: gap,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -359,62 +349,5 @@ class _PathPainter extends CustomPainter {
         oldDelegate.cellSize != cellSize ||
         oldDelegate.gap != gap ||
         oldDelegate.isSolved != isSolved;
-  }
-}
-
-class _WallPainter extends CustomPainter {
-  const _WallPainter({
-    required this.walls,
-    required this.cellSize,
-    required this.gap,
-  });
-
-  final List<WallSegment> walls;
-  final double cellSize;
-  final double gap;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (walls.isEmpty) {
-      return;
-    }
-
-    final shadowPaint = Paint()
-      ..color = AppTheme.white.withValues(alpha: 0.88)
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = gap + 8;
-    final wallPaint = Paint()
-      ..color = const Color(0xFF2E2926)
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = gap + 5;
-
-    for (final wall in walls) {
-      final line = _lineFor(wall);
-      canvas.drawLine(line.$1, line.$2, shadowPaint);
-      canvas.drawLine(line.$1, line.$2, wallPaint);
-    }
-  }
-
-  (Offset, Offset) _lineFor(WallSegment wall) {
-    final left = wall.column * (cellSize + gap);
-    final top = wall.row * (cellSize + gap);
-
-    return switch (wall.orientation) {
-      WallOrientation.horizontal => (
-        Offset(left, top + cellSize + gap / 2),
-        Offset(left + cellSize, top + cellSize + gap / 2),
-      ),
-      WallOrientation.vertical => (
-        Offset(left + cellSize + gap / 2, top),
-        Offset(left + cellSize + gap / 2, top + cellSize),
-      ),
-    };
-  }
-
-  @override
-  bool shouldRepaint(covariant _WallPainter oldDelegate) {
-    return oldDelegate.walls != walls ||
-        oldDelegate.cellSize != cellSize ||
-        oldDelegate.gap != gap;
   }
 }
