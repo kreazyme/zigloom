@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:example_template/common/theme.dart';
-import 'package:example_template/gen/i18n/locale.dart';
 import 'package:example_template/models/game_scenario.dart';
 import 'package:example_template/pages/gameplay/gameplay_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,12 @@ class GameplayBoard extends StatelessWidget {
     super.key,
     required this.scenario,
     required this.controller,
+    required this.onSolved,
   });
 
   final GameScenario scenario;
   final GameplayController controller;
+  final VoidCallback onSolved;
 
   @override
   Widget build(BuildContext context) {
@@ -139,11 +140,8 @@ class GameplayBoard extends StatelessWidget {
       return;
     }
 
-    final solved = controller.extendPath(GridPoint(row, column));
-    if (solved && context.mounted) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(context.t.gameplay.solved)));
+    if (controller.extendPath(GridPoint(row, column))) {
+      onSolved();
     }
   }
 }

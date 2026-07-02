@@ -190,6 +190,27 @@ class TranslationsGameplayEn {
 	/// en: 'Solved'
 	String get solved => 'Solved';
 
+	/// en: 'Puzzle Clear'
+	String get winTitle => 'Puzzle Clear';
+
+	/// en: 'A perfect path from start to finish.'
+	String get winMessage => 'A perfect path from start to finish.';
+
+	/// en: 'Time'
+	String get winTime => 'Time';
+
+	/// en: 'Moves'
+	String get winMoves => 'Moves';
+
+	/// en: 'Next Level'
+	String get nextLevel => 'Next Level';
+
+	/// en: 'Levels'
+	String get chooseLevel => 'Levels';
+
+	/// en: 'Replay'
+	String get playAgain => 'Replay';
+
 	/// en: 'Undo'
 	String get undo => 'Undo';
 
@@ -411,6 +432,13 @@ extension on Translations {
 			'gameplay.nextClue' => 'Find {number}',
 			'gameplay.invalidMove' => 'That square breaks the path',
 			'gameplay.solved' => 'Solved',
+			'gameplay.winTitle' => 'Puzzle Clear',
+			'gameplay.winMessage' => 'A perfect path from start to finish.',
+			'gameplay.winTime' => 'Time',
+			'gameplay.winMoves' => 'Moves',
+			'gameplay.nextLevel' => 'Next Level',
+			'gameplay.chooseLevel' => 'Levels',
+			'gameplay.playAgain' => 'Replay',
 			'gameplay.undo' => 'Undo',
 			'gameplay.reset' => 'Reset',
 			'gameplay.howToPlay' => 'How To Play',

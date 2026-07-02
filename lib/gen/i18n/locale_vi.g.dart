@@ -115,6 +115,13 @@ class _TranslationsGameplayVi implements TranslationsGameplayEn {
 	@override String get nextClue => 'Tìm {number}';
 	@override String get invalidMove => 'Ô này làm đứt đường đi';
 	@override String get solved => 'Đã giải';
+	@override String get winTitle => 'Qua màn';
+	@override String get winMessage => 'Một đường đi hoàn chỉnh từ đầu đến cuối.';
+	@override String get winTime => 'Thời gian';
+	@override String get winMoves => 'Nước đi';
+	@override String get nextLevel => 'Màn tiếp';
+	@override String get chooseLevel => 'Chọn màn';
+	@override String get playAgain => 'Chơi lại';
 	@override String get undo => 'Hoàn tác';
 	@override String get reset => 'Đặt lại';
 	@override String get howToPlay => 'Cách chơi';
@@ -237,6 +244,13 @@ extension on TranslationsVi {
 			'gameplay.nextClue' => 'Tìm {number}',
 			'gameplay.invalidMove' => 'Ô này làm đứt đường đi',
 			'gameplay.solved' => 'Đã giải',
+			'gameplay.winTitle' => 'Qua màn',
+			'gameplay.winMessage' => 'Một đường đi hoàn chỉnh từ đầu đến cuối.',
+			'gameplay.winTime' => 'Thời gian',
+			'gameplay.winMoves' => 'Nước đi',
+			'gameplay.nextLevel' => 'Màn tiếp',
+			'gameplay.chooseLevel' => 'Chọn màn',
+			'gameplay.playAgain' => 'Chơi lại',
 			'gameplay.undo' => 'Hoàn tác',
 			'gameplay.reset' => 'Đặt lại',
 			'gameplay.howToPlay' => 'Cách chơi',
