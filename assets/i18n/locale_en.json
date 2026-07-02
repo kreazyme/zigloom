@@ -77,5 +77,25 @@
     "avoidDiagonal": "Diagonal moves",
     "avoidEarlyNumber": "Visiting a later number early",
     "backToPuzzle": "Back To Puzzle"
+  },
+  "settings": {
+    "title": "Settings",
+    "back": "Back",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "play": "Play",
+    "sound": "Sound",
+    "haptics": "Haptics",
+    "on": "On",
+    "off": "Off",
+    "language": "Language",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "howToPlay": "How To Play",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms"
   }
 }

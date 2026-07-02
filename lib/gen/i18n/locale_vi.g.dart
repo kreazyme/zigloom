@@ -44,6 +44,7 @@ class TranslationsVi with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _TranslationsGameplayVi gameplay = _TranslationsGameplayVi._(_root);
 	@override late final _TranslationsPauseVi pause = _TranslationsPauseVi._(_root);
 	@override late final _TranslationsHowToPlayVi howToPlay = _TranslationsHowToPlayVi._(_root);
+	@override late final _TranslationsSettingsVi settings = _TranslationsSettingsVi._(_root);
 }
 
 // Path: home
@@ -166,6 +167,33 @@ class _TranslationsHowToPlayVi implements TranslationsHowToPlayEn {
 	@override String get backToPuzzle => 'Quay lại màn chơi';
 }
 
+// Path: settings
+class _TranslationsSettingsVi implements TranslationsSettingsEn {
+	_TranslationsSettingsVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Cài đặt';
+	@override String get back => 'Quay lại';
+	@override String get appearance => 'Giao diện';
+	@override String get theme => 'Chủ đề';
+	@override String get system => 'Hệ thống';
+	@override String get light => 'Sáng';
+	@override String get dark => 'Tối';
+	@override String get play => 'Chơi';
+	@override String get sound => 'Âm thanh';
+	@override String get haptics => 'Rung';
+	@override String get on => 'Bật';
+	@override String get off => 'Tắt';
+	@override String get language => 'Ngôn ngữ';
+	@override String get english => 'Tiếng Anh';
+	@override String get vietnamese => 'Tiếng Việt';
+	@override String get howToPlay => 'Cách chơi';
+	@override String get privacyPolicy => 'Chính sách bảo mật';
+	@override String get terms => 'Điều khoản';
+}
+
 /// The flat map containing all translations for locale <vi>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -241,6 +269,24 @@ extension on TranslationsVi {
 			'howToPlay.avoidDiagonal' => 'Đi chéo',
 			'howToPlay.avoidEarlyNumber' => 'Đi vào số sau quá sớm',
 			'howToPlay.backToPuzzle' => 'Quay lại màn chơi',
+			'settings.title' => 'Cài đặt',
+			'settings.back' => 'Quay lại',
+			'settings.appearance' => 'Giao diện',
+			'settings.theme' => 'Chủ đề',
+			'settings.system' => 'Hệ thống',
+			'settings.light' => 'Sáng',
+			'settings.dark' => 'Tối',
+			'settings.play' => 'Chơi',
+			'settings.sound' => 'Âm thanh',
+			'settings.haptics' => 'Rung',
+			'settings.on' => 'Bật',
+			'settings.off' => 'Tắt',
+			'settings.language' => 'Ngôn ngữ',
+			'settings.english' => 'Tiếng Anh',
+			'settings.vietnamese' => 'Tiếng Việt',
+			'settings.howToPlay' => 'Cách chơi',
+			'settings.privacyPolicy' => 'Chính sách bảo mật',
+			'settings.terms' => 'Điều khoản',
 			_ => null,
 		};
 	}

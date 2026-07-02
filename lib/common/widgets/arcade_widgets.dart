@@ -2,21 +2,29 @@ import 'package:example_template/common/theme.dart';
 import 'package:flutter/material.dart';
 
 class ArcadeBackdrop extends StatelessWidget {
-  const ArcadeBackdrop({super.key, required this.child});
+  const ArcadeBackdrop({super.key, required this.child, this.backgroundAsset});
 
   final Widget child;
+  final String? backgroundAsset;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF1397D8), AppTheme.cyanPale],
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF1397D8), AppTheme.cyanPale],
+            ),
+          ),
         ),
-      ),
-      child: child,
+        if (backgroundAsset != null)
+          Image.asset(backgroundAsset!, fit: BoxFit.cover),
+        child,
+      ],
     );
   }
 }
@@ -39,6 +47,9 @@ class ArcadeTitle extends StatelessWidget {
         Theme.of(context).textTheme.displayLarge ??
         const TextStyle(fontSize: 52, fontWeight: FontWeight.w900);
     final style = baseStyle.copyWith(fontSize: fontSize);
+    final effectiveFontSize = fontSize ?? baseStyle.fontSize ?? 52;
+    final strokeWidth = (effectiveFontSize * 0.1).clamp(4.0, 6.0);
+    final shadowOffset = (effectiveFontSize * 0.05).clamp(1.5, 2.5);
 
     return FittedBox(
       fit: BoxFit.scaleDown,
@@ -51,13 +62,13 @@ class ArcadeTitle extends StatelessWidget {
             style: style.copyWith(
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 7
+                ..strokeWidth = strokeWidth
                 ..color = AppTheme.inkBlue,
-              shadows: const [
+              shadows: [
                 Shadow(
                   color: AppTheme.blueDeep,
                   blurRadius: 0,
-                  offset: Offset(4, 5),
+                  offset: Offset(shadowOffset, shadowOffset + 0.5),
                 ),
               ],
             ),
@@ -71,7 +82,7 @@ class ArcadeTitle extends StatelessWidget {
               shadows: const [
                 Shadow(
                   color: AppTheme.blueHighlight,
-                  blurRadius: 0,
+                  blurRadius: 1,
                   offset: Offset(0, -1),
                 ),
               ],

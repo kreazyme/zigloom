@@ -7,6 +7,7 @@ import 'package:example_template/pages/how_to_play/how_to_play_page.dart';
 import 'package:example_template/pages/onboarding/onboarding_page.dart';
 import 'package:example_template/pages/pause/pause_page.dart';
 import 'package:example_template/pages/policy/policy_page.dart';
+import 'package:example_template/pages/settings/settings_page.dart';
 import 'package:example_template/pages/splash/splash_page.dart';
 import 'package:example_template/pages/terms/terms_page.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class AppRoutePaths {
   static const gameplay = '/gameplay/:puzzleNumber';
   static const pause = '/pause';
   static const howToPlay = '/how-to-play';
+  static const settings = '/settings';
   static const policy = '/policy';
   static const terms = '/terms';
 
@@ -68,6 +70,10 @@ final GoRouter appRouter = GoRouter(
 
         return HowToPlayPage(fromGameplay: fromGameplay);
       },
+    ),
+    GoRoute(
+      path: AppRoutePaths.settings,
+      builder: (context, state) => const SettingsPage(),
     ),
     GoRoute(
       path: AppRoutePaths.policy,

@@ -77,5 +77,25 @@
     "avoidDiagonal": "Đi chéo",
     "avoidEarlyNumber": "Đi vào số sau quá sớm",
     "backToPuzzle": "Quay lại màn chơi"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "back": "Quay lại",
+    "appearance": "Giao diện",
+    "theme": "Chủ đề",
+    "system": "Hệ thống",
+    "light": "Sáng",
+    "dark": "Tối",
+    "play": "Chơi",
+    "sound": "Âm thanh",
+    "haptics": "Rung",
+    "on": "Bật",
+    "off": "Tắt",
+    "language": "Ngôn ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "howToPlay": "Cách chơi",
+    "privacyPolicy": "Chính sách bảo mật",
+    "terms": "Điều khoản"
   }
 }

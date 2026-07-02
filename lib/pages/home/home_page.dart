@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                             tooltip: strings.settings,
                             icon: Icons.settings_rounded,
                             onPressed: () =>
-                                _showComingSoon(context, strings.settings),
+                                context.push(AppRoutePaths.settings),
                           ),
                         ),
                         const SizedBox(height: 18),
@@ -127,18 +127,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _showComingSoon(BuildContext context, String screenName) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            context.t.home.comingSoon.replaceAll('{screen}', screenName),
-          ),
-        ),
-      );
-  }
-
   static String _formatNumber(String template, int number) {
     return template.replaceAll('{number}', number.toString());
   }
@@ -166,19 +154,19 @@ class _HomeProgress {
 class _HomeBackdrop extends StatelessWidget {
   const _HomeBackdrop({required this.child});
 
+  static const _backgroundAsset =
+      'assets/images/backgrounds/home_background.png';
+
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF1397D8), AppTheme.cyanPale],
-        ),
-      ),
-      child: child,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.asset(_backgroundAsset, fit: BoxFit.cover),
+        child,
+      ],
     );
   }
 }
@@ -193,6 +181,9 @@ class _OutlinedTitle extends StatelessWidget {
     final baseStyle =
         Theme.of(context).textTheme.displayLarge ??
         const TextStyle(fontSize: 52, fontWeight: FontWeight.w900);
+    final effectiveFontSize = baseStyle.fontSize ?? 52;
+    final strokeWidth = (effectiveFontSize * 0.1).clamp(4.0, 6.0);
+    final shadowOffset = (effectiveFontSize * 0.05).clamp(1.5, 2.5);
 
     return FittedBox(
       fit: BoxFit.scaleDown,
@@ -203,13 +194,13 @@ class _OutlinedTitle extends StatelessWidget {
             style: baseStyle.copyWith(
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 7
+                ..strokeWidth = strokeWidth
                 ..color = AppTheme.inkBlue,
-              shadows: const [
+              shadows: [
                 Shadow(
                   color: AppTheme.blueDeep,
                   blurRadius: 0,
-                  offset: Offset(4, 5),
+                  offset: Offset(shadowOffset, shadowOffset + 0.5),
                 ),
               ],
             ),
@@ -221,7 +212,7 @@ class _OutlinedTitle extends StatelessWidget {
               shadows: const [
                 Shadow(
                   color: AppTheme.blueHighlight,
-                  blurRadius: 0,
+                  blurRadius: 1,
                   offset: Offset(0, -1),
                 ),
               ],

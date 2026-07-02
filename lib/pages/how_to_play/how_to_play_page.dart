@@ -4,6 +4,9 @@ import 'package:example_template/gen/i18n/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+const _howToPlayBackgroundAsset =
+    'assets/images/backgrounds/home_background.png';
+
 class HowToPlayPage extends StatelessWidget {
   const HowToPlayPage({super.key, this.fromGameplay = false});
 
@@ -15,6 +18,7 @@ class HowToPlayPage extends StatelessWidget {
 
     return Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _howToPlayBackgroundAsset,
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {

@@ -314,7 +314,7 @@ abstract final class AppTheme {
   }
 
   static const _titleShadow = [
-    Shadow(color: inkBlue, blurRadius: 0, offset: Offset(3, 3)),
-    Shadow(color: blueDeep, blurRadius: 8, offset: Offset(0, 3)),
+    Shadow(color: inkBlue, blurRadius: 0, offset: Offset(1.5, 1.5)),
+    Shadow(color: blueDeep, blurRadius: 4, offset: Offset(0, 1.5)),
   ];
 }

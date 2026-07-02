@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+const _gameplayBackgroundAsset =
+    'assets/images/backgrounds/game_list_background.png';
+
 class GameplayPage extends ConsumerWidget {
   const GameplayPage({super.key, required this.puzzleNumber});
 
@@ -45,6 +48,7 @@ class _GameplayContent extends ConsumerWidget {
 
     return Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameplayBackgroundAsset,
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -151,6 +155,7 @@ class _GameplayLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameplayBackgroundAsset,
         child: Center(child: CircularProgressIndicator(color: AppTheme.white)),
       ),
     );
@@ -169,6 +174,7 @@ class _GameplayError extends StatelessWidget {
 
     return Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameplayBackgroundAsset,
         child: SafeArea(
           child: Center(
             child: Padding(

@@ -51,7 +51,7 @@ class _PausePageState extends State<PausePage> {
                           onReset: () =>
                               setState(() => _isConfirmingReset = true),
                           onSettings: () =>
-                              _showComingSoon(context, strings.settings),
+                              context.push(AppRoutePaths.settings),
                           onHome: () => context.go(AppRoutePaths.home),
                         ),
                 ),

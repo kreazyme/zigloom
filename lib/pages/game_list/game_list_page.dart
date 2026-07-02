@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+const _gameListBackgroundAsset =
+    'assets/images/backgrounds/game_list_background.png';
+
 class GameListPage extends ConsumerWidget {
   const GameListPage({super.key});
 
@@ -42,6 +45,7 @@ class _GameListContent extends StatelessWidget {
 
     return Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameListBackgroundAsset,
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -70,13 +74,7 @@ class _GameListContent extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 12),
-                            ArcadeCircleButton(
-                              tooltip: strings.pauseDemo,
-                              icon: Icons.pause_rounded,
-                              isYellow: true,
-                              onPressed: () =>
-                                  context.push(AppRoutePaths.pause),
-                            ),
+                            const SizedBox(width: 54),
                           ],
                         ),
                         const SizedBox(height: 18),
@@ -151,6 +149,7 @@ class _GameListLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameListBackgroundAsset,
         child: Center(child: CircularProgressIndicator(color: AppTheme.white)),
       ),
     );
@@ -169,6 +168,7 @@ class _GameListError extends StatelessWidget {
 
     return Scaffold(
       body: ArcadeBackdrop(
+        backgroundAsset: _gameListBackgroundAsset,
         child: SafeArea(
           child: Center(
             child: Padding(

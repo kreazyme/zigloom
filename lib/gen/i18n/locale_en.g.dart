@@ -50,6 +50,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsGameplayEn gameplay = TranslationsGameplayEn._(_root);
 	late final TranslationsPauseEn pause = TranslationsPauseEn._(_root);
 	late final TranslationsHowToPlayEn howToPlay = TranslationsHowToPlayEn._(_root);
+	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
 }
 
 // Path: home
@@ -304,6 +305,69 @@ class TranslationsHowToPlayEn {
 	String get backToPuzzle => 'Back To Puzzle';
 }
 
+// Path: settings
+class TranslationsSettingsEn {
+	TranslationsSettingsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Settings'
+	String get title => 'Settings';
+
+	/// en: 'Back'
+	String get back => 'Back';
+
+	/// en: 'Appearance'
+	String get appearance => 'Appearance';
+
+	/// en: 'Theme'
+	String get theme => 'Theme';
+
+	/// en: 'System'
+	String get system => 'System';
+
+	/// en: 'Light'
+	String get light => 'Light';
+
+	/// en: 'Dark'
+	String get dark => 'Dark';
+
+	/// en: 'Play'
+	String get play => 'Play';
+
+	/// en: 'Sound'
+	String get sound => 'Sound';
+
+	/// en: 'Haptics'
+	String get haptics => 'Haptics';
+
+	/// en: 'On'
+	String get on => 'On';
+
+	/// en: 'Off'
+	String get off => 'Off';
+
+	/// en: 'Language'
+	String get language => 'Language';
+
+	/// en: 'English'
+	String get english => 'English';
+
+	/// en: 'Vietnamese'
+	String get vietnamese => 'Vietnamese';
+
+	/// en: 'How To Play'
+	String get howToPlay => 'How To Play';
+
+	/// en: 'Privacy Policy'
+	String get privacyPolicy => 'Privacy Policy';
+
+	/// en: 'Terms'
+	String get terms => 'Terms';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -379,6 +443,24 @@ extension on Translations {
 			'howToPlay.avoidDiagonal' => 'Diagonal moves',
 			'howToPlay.avoidEarlyNumber' => 'Visiting a later number early',
 			'howToPlay.backToPuzzle' => 'Back To Puzzle',
+			'settings.title' => 'Settings',
+			'settings.back' => 'Back',
+			'settings.appearance' => 'Appearance',
+			'settings.theme' => 'Theme',
+			'settings.system' => 'System',
+			'settings.light' => 'Light',
+			'settings.dark' => 'Dark',
+			'settings.play' => 'Play',
+			'settings.sound' => 'Sound',
+			'settings.haptics' => 'Haptics',
+			'settings.on' => 'On',
+			'settings.off' => 'Off',
+			'settings.language' => 'Language',
+			'settings.english' => 'English',
+			'settings.vietnamese' => 'Vietnamese',
+			'settings.howToPlay' => 'How To Play',
+			'settings.privacyPolicy' => 'Privacy Policy',
+			'settings.terms' => 'Terms',
 			_ => null,
 		};
 	}
