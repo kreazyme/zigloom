@@ -19,81 +19,103 @@ class GameplayBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final boardSize = constraints.maxWidth.clamp(280.0, 500.0);
-        final gap = boardSize < 340 ? 4.0 : 5.0;
+        final gap = boardSize < 340 ? 1.5 : 2.0;
         final cellSize =
             (boardSize - gap * (scenario.columnCount - 1)) /
             scenario.columnCount;
 
         return Center(
-          child: SizedBox.square(
-            dimension: boardSize,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTapUp: (details) => _selectFromOffset(
-                context,
-                details.localPosition,
-                cellSize,
-                gap,
-              ),
-              onPanStart: (details) => _selectFromOffset(
-                context,
-                details.localPosition,
-                cellSize,
-                gap,
-              ),
-              onPanUpdate: (details) => _selectFromOffset(
-                context,
-                details.localPosition,
-                cellSize,
-                gap,
-              ),
-              child: Stack(
-                children: [
-                  CustomPaint(
-                    size: Size.square(boardSize),
-                    painter: _PathPainter(
-                      path: controller.path,
-                      cellSize: cellSize,
-                      gap: gap,
-                      isSolved: controller.isSolved,
-                    ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppTheme.panelRadius),
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.blueDeep.withValues(alpha: 0.24),
+                  blurRadius: 18,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppTheme.panelRadius),
+              child: SizedBox.square(
+                dimension: boardSize,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapUp: (details) => _selectFromOffset(
+                    context,
+                    details.localPosition,
+                    cellSize,
+                    gap,
                   ),
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: scenario.columnCount,
-                      mainAxisSpacing: gap,
-                      crossAxisSpacing: gap,
-                    ),
-                    itemCount: scenario.cellCount,
-                    itemBuilder: (context, index) {
-                      final point = GridPoint(
-                        index ~/ scenario.columnCount,
-                        index % scenario.columnCount,
-                      );
-                      final number = scenario.numberAt(point);
-                      final isPath = controller.path.contains(point);
-
-                      return BoardCell(
-                        number: number,
-                        isPath: isPath,
-                        isHead: controller.path.last == point,
-                        isInvalid: controller.invalidPoint == point,
-                        isSolved: controller.isSolved,
-                      );
-                    },
+                  onPanStart: (details) => _selectFromOffset(
+                    context,
+                    details.localPosition,
+                    cellSize,
+                    gap,
                   ),
-                  IgnorePointer(
-                    child: CustomPaint(
-                      size: Size.square(boardSize),
-                      painter: _WallPainter(
-                        walls: scenario.wallPositions,
-                        cellSize: cellSize,
-                        gap: gap,
+                  onPanUpdate: (details) => _selectFromOffset(
+                    context,
+                    details.localPosition,
+                    cellSize,
+                    gap,
+                  ),
+                  child: Stack(
+                    children: [
+                      CustomPaint(
+                        size: Size.square(boardSize),
+                        painter: _BoardGridPainter(
+                          rowCount: scenario.rowCount,
+                          columnCount: scenario.columnCount,
+                          cellSize: cellSize,
+                          gap: gap,
+                        ),
                       ),
-                    ),
+                      CustomPaint(
+                        size: Size.square(boardSize),
+                        painter: _PathPainter(
+                          path: controller.path,
+                          cellSize: cellSize,
+                          gap: gap,
+                          isSolved: controller.isSolved,
+                        ),
+                      ),
+                      GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: scenario.columnCount,
+                          mainAxisSpacing: gap,
+                          crossAxisSpacing: gap,
+                        ),
+                        itemCount: scenario.cellCount,
+                        itemBuilder: (context, index) {
+                          final point = GridPoint(
+                            index ~/ scenario.columnCount,
+                            index % scenario.columnCount,
+                          );
+                          final number = scenario.numberAt(point);
+
+                          return BoardCell(
+                            number: number,
+                            isHead: controller.path.last == point,
+                            isInvalid: controller.invalidPoint == point,
+                            isSolved: controller.isSolved,
+                          );
+                        },
+                      ),
+                      IgnorePointer(
+                        child: CustomPaint(
+                          size: Size.square(boardSize),
+                          painter: _WallPainter(
+                            walls: scenario.wallPositions,
+                            cellSize: cellSize,
+                            gap: gap,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -133,18 +155,61 @@ class GameplayBoard extends StatelessWidget {
   }
 }
 
+class _BoardGridPainter extends CustomPainter {
+  const _BoardGridPainter({
+    required this.rowCount,
+    required this.columnCount,
+    required this.cellSize,
+    required this.gap,
+  });
+
+  final int rowCount;
+  final int columnCount;
+  final double cellSize;
+  final double gap;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final gridPaint = Paint()..color = AppTheme.blueDeep.withValues(alpha: 0.1);
+    final cellPaint = Paint()
+      ..color = Color.alphaBlend(
+        AppTheme.white.withValues(alpha: 0.84),
+        AppTheme.cyanPale,
+      );
+
+    canvas.drawRect(Offset.zero & size, gridPaint);
+
+    for (var row = 0; row < rowCount; row += 1) {
+      for (var column = 0; column < columnCount; column += 1) {
+        final left = column * (cellSize + gap);
+        final top = row * (cellSize + gap);
+        canvas.drawRect(
+          Rect.fromLTWH(left, top, cellSize, cellSize),
+          cellPaint,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BoardGridPainter oldDelegate) {
+    return oldDelegate.rowCount != rowCount ||
+        oldDelegate.columnCount != columnCount ||
+        oldDelegate.cellSize != cellSize ||
+        oldDelegate.gap != gap;
+  }
+}
+
 class BoardCell extends StatelessWidget {
   const BoardCell({
     super.key,
     required this.number,
-    required this.isPath,
     required this.isHead,
     required this.isInvalid,
     required this.isSolved,
   });
 
   final int? number;
-  final bool isPath;
   final bool isHead;
   final bool isInvalid;
   final bool isSolved;
@@ -152,67 +217,59 @@ class BoardCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameTheme = Theme.of(context).extension<ZigloomGameTheme>()!;
-    final isNumber = number != null;
-    final borderColor = isInvalid
-        ? AppTheme.actionOrange
-        : isSolved
-        ? AppTheme.starYellow
-        : isHead
-        ? AppTheme.white
-        : isNumber
-        ? AppTheme.cyanPale
-        : AppTheme.white.withValues(alpha: 0.7);
-    final cellColor = AppTheme.cyanPale.withValues(alpha: 0.94);
+    final numberStyle = Theme.of(context).textTheme.displayMedium?.copyWith(
+      color: AppTheme.inkBlue.withValues(alpha: 0.92),
+      fontSize: number != null && number! >= 10 ? 18 : 22,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.w900,
+      shadows: const [],
+    );
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 140),
       transform: Matrix4.translationValues(isInvalid ? 3 : 0, 0, 0),
       decoration: BoxDecoration(
-        gradient: isInvalid
-            ? gameTheme.redGloss
-            : isNumber || isPath
-            ? gameTheme.blueGloss
-            : null,
-        color: isNumber || isPath || isInvalid ? null : cellColor,
-        borderRadius: BorderRadius.circular(AppTheme.boardCellRadius),
-        border: Border.all(color: borderColor, width: isHead ? 3 : 2),
+        color: isInvalid
+            ? AppTheme.actionOrange.withValues(alpha: 0.28)
+            : Colors.transparent,
+        border: Border.all(
+          color: isSolved && isHead
+              ? AppTheme.starYellow.withValues(alpha: 0.9)
+              : isHead
+              ? AppTheme.white.withValues(alpha: 0.78)
+              : Colors.transparent,
+          width: isHead ? 2 : 0,
+        ),
         boxShadow: [
           if (isHead)
             BoxShadow(
-              color: AppTheme.white.withValues(alpha: 0.46),
-              blurRadius: 12,
-              spreadRadius: 1,
+              color: AppTheme.white.withValues(alpha: 0.32),
+              blurRadius: 10,
             ),
-          if (isSolved)
+          if (isInvalid)
             BoxShadow(
-              color: AppTheme.starYellow.withValues(alpha: 0.32),
-              blurRadius: 9,
-              spreadRadius: 1,
+              color: AppTheme.actionOrange.withValues(alpha: 0.22),
+              blurRadius: 10,
             ),
         ],
       ),
       child: Center(
         child: number == null
             ? isHead
-                  ? const Icon(
-                      Icons.circle_rounded,
-                      color: AppTheme.white,
-                      size: 16,
+                  ? DecoratedBox(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.white.withValues(alpha: 0.9),
+                        boxShadow: gameTheme.tileShadow,
+                      ),
+                      child: const SizedBox.square(dimension: 10),
                     )
                   : null
             : FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Text(
-                    number.toString(),
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: AppTheme.white,
-                      fontSize: number! >= 10 ? 24 : 30,
-                      fontStyle: FontStyle.italic,
-                      shadows: gameTheme.textShadow,
-                    ),
-                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: Text(number.toString(), style: numberStyle),
                 ),
               ),
       ),
@@ -240,23 +297,30 @@ class _PathPainter extends CustomPainter {
     }
 
     final points = path.map(_centerOf).toList();
-    final shadowPaint = Paint()
-      ..color = AppTheme.blueDeep.withValues(alpha: 0.55)
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..strokeWidth = cellSize * 0.34
-      ..style = PaintingStyle.stroke;
     final pathPaint = Paint()
-      ..color = isSolved ? AppTheme.starYellow : AppTheme.blueHighlight
+      ..color = isSolved ? AppTheme.starYellow : AppTheme.blueBase
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
-      ..strokeWidth = cellSize * 0.22
+      ..strokeWidth = cellSize * 0.56
       ..style = PaintingStyle.stroke;
+    final highlightPaint = Paint()
+      ..color = AppTheme.white.withValues(alpha: 0.16)
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = cellSize * 0.44
+      ..style = PaintingStyle.stroke;
+    final endPaint = Paint()
+      ..color = isSolved
+          ? AppTheme.starOrange.withValues(alpha: 0.38)
+          : AppTheme.blueDeep.withValues(alpha: 0.2);
 
     for (var index = 0; index < points.length - 1; index += 1) {
-      canvas.drawLine(points[index], points[index + 1], shadowPaint);
       canvas.drawLine(points[index], points[index + 1], pathPaint);
+      canvas.drawLine(points[index], points[index + 1], highlightPaint);
     }
+
+    canvas.drawCircle(points.first, cellSize * 0.28, endPaint);
+    canvas.drawCircle(points.last, cellSize * 0.28, endPaint);
   }
 
   Offset _centerOf(GridPoint point) {
@@ -293,13 +357,13 @@ class _WallPainter extends CustomPainter {
     }
 
     final shadowPaint = Paint()
-      ..color = AppTheme.white.withValues(alpha: 0.85)
+      ..color = AppTheme.white.withValues(alpha: 0.88)
       ..strokeCap = StrokeCap.square
-      ..strokeWidth = gap + 7;
+      ..strokeWidth = gap + 8;
     final wallPaint = Paint()
       ..color = const Color(0xFF2E2926)
       ..strokeCap = StrokeCap.square
-      ..strokeWidth = gap + 4;
+      ..strokeWidth = gap + 5;
 
     for (final wall in walls) {
       final line = _lineFor(wall);
