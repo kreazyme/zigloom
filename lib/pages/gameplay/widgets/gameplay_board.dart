@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:example_template/common/theme.dart';
 import 'package:example_template/gen/i18n/locale.dart';
 import 'package:example_template/models/game_scenario.dart';
@@ -99,6 +101,7 @@ class GameplayBoard extends StatelessWidget {
                             number: number,
                             isHead: controller.path.last == point,
                             isInvalid: controller.invalidPoint == point,
+                            invalidPulse: controller.invalidPulse,
                             isSolved: controller.isSolved,
                           );
                         },
@@ -206,12 +209,14 @@ class BoardCell extends StatelessWidget {
     required this.number,
     required this.isHead,
     required this.isInvalid,
+    required this.invalidPulse,
     required this.isSolved,
   });
 
   final int? number;
   final bool isHead;
   final bool isInvalid;
+  final int invalidPulse;
   final bool isSolved;
 
   @override
@@ -225,54 +230,72 @@ class BoardCell extends StatelessWidget {
       shadows: const [],
     );
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 140),
-      transform: Matrix4.translationValues(isInvalid ? 3 : 0, 0, 0),
-      decoration: BoxDecoration(
-        color: isInvalid
-            ? AppTheme.actionOrange.withValues(alpha: 0.28)
-            : Colors.transparent,
-        border: Border.all(
-          color: isSolved && isHead
-              ? AppTheme.starYellow.withValues(alpha: 0.9)
-              : isHead
-              ? AppTheme.white.withValues(alpha: 0.78)
-              : Colors.transparent,
-          width: isHead ? 2 : 0,
-        ),
-        boxShadow: [
-          if (isHead)
-            BoxShadow(
-              color: AppTheme.white.withValues(alpha: 0.32),
-              blurRadius: 10,
-            ),
-          if (isInvalid)
-            BoxShadow(
-              color: AppTheme.actionOrange.withValues(alpha: 0.22),
-              blurRadius: 10,
-            ),
-        ],
-      ),
-      child: Center(
-        child: number == null
-            ? isHead
-                  ? DecoratedBox(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.white.withValues(alpha: 0.9),
-                        boxShadow: gameTheme.tileShadow,
-                      ),
-                      child: const SizedBox.square(dimension: 10),
-                    )
-                  : null
-            : FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Text(number.toString(), style: numberStyle),
+    return TweenAnimationBuilder<double>(
+      key: ValueKey<int>(isInvalid ? invalidPulse : -1),
+      tween: Tween(begin: 0, end: isInvalid ? 1 : 0),
+      duration: const Duration(milliseconds: 280),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        final shake = isInvalid
+            ? math.sin(value * math.pi * 4) * (1 - value) * 6
+            : 0.0;
+        final scale = isInvalid ? 1 + math.sin(value * math.pi) * 0.035 : 1.0;
+
+        return Transform.translate(
+          offset: Offset(shake, 0),
+          child: Transform.scale(
+            scale: scale,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 140),
+              decoration: BoxDecoration(
+                color: isInvalid
+                    ? AppTheme.actionOrange.withValues(alpha: 0.28)
+                    : Colors.transparent,
+                border: Border.all(
+                  color: isSolved && isHead
+                      ? AppTheme.starYellow.withValues(alpha: 0.9)
+                      : isHead
+                      ? AppTheme.white.withValues(alpha: 0.78)
+                      : Colors.transparent,
+                  width: isHead ? 2 : 0,
                 ),
+                boxShadow: [
+                  if (isHead)
+                    BoxShadow(
+                      color: AppTheme.white.withValues(alpha: 0.32),
+                      blurRadius: 10,
+                    ),
+                  if (isInvalid)
+                    BoxShadow(
+                      color: AppTheme.actionOrange.withValues(alpha: 0.22),
+                      blurRadius: 10,
+                    ),
+                ],
               ),
-      ),
+              child: Center(
+                child: number == null
+                    ? isHead
+                          ? DecoratedBox(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.white.withValues(alpha: 0.9),
+                                boxShadow: gameTheme.tileShadow,
+                              ),
+                              child: const SizedBox.square(dimension: 10),
+                            )
+                          : null
+                    : FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Text(number.toString(), style: numberStyle),
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

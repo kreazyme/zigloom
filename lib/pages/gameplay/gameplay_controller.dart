@@ -22,6 +22,7 @@ class GameplayController extends ChangeNotifier {
   Duration _elapsed = Duration.zero;
   int _moveCount = 0;
   int _undoCount = 0;
+  int _invalidPulse = 0;
   GridPoint? _invalidPoint;
   bool _isSolved = false;
   bool _isLoadingProgress = true;
@@ -31,6 +32,7 @@ class GameplayController extends ChangeNotifier {
   Duration get elapsed => _elapsed;
   int get moveCount => _moveCount;
   int get undoCount => _undoCount;
+  int get invalidPulse => _invalidPulse;
   GridPoint? get invalidPoint => _invalidPoint;
   bool get isSolved => _isSolved;
   bool get isLoadingProgress => _isLoadingProgress;
@@ -95,7 +97,17 @@ class GameplayController extends ChangeNotifier {
   }
 
   bool extendPath(GridPoint point) {
-    if (_isSolved || _isLoadingProgress || point == _path.last) {
+    if (_isLoadingProgress || point == _path.last) {
+      return false;
+    }
+
+    final selectedIndex = _path.indexOf(point);
+    if (selectedIndex != -1) {
+      _trimPathTo(selectedIndex);
+      return false;
+    }
+
+    if (_isSolved) {
       return false;
     }
 
@@ -124,6 +136,20 @@ class GameplayController extends ChangeNotifier {
     }
 
     return _isSolved;
+  }
+
+  void _trimPathTo(int selectedIndex) {
+    _path = _path.sublist(0, selectedIndex + 1);
+    _undoCount += 1;
+    _invalidPoint = null;
+
+    if (_isSolved) {
+      _isSolved = false;
+      startTimer();
+    }
+
+    notifyListeners();
+    unawaited(_persistProgress());
   }
 
   void undo() {
@@ -202,6 +228,7 @@ class GameplayController extends ChangeNotifier {
 
   void _flashInvalid(GridPoint point) {
     _invalidPoint = point;
+    _invalidPulse += 1;
     notifyListeners();
     Future<void>.delayed(const Duration(milliseconds: 520), () {
       if (!_isDisposed && _invalidPoint == point) {
