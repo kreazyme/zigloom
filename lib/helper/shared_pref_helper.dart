@@ -75,6 +75,34 @@ class _StringPreference implements _Action<String> {
   }
 }
 
+class _SolvedPuzzles {
+  const _SolvedPuzzles();
+
+  static const _key = 'solved_puzzle_numbers';
+
+  Future<Set<int>> getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final values = prefs.getStringList(_key) ?? const [];
+
+    return values.map(int.tryParse).whereType<int>().toSet();
+  }
+
+  Future<void> add(int puzzleNumber) async {
+    final prefs = await SharedPreferences.getInstance();
+    final solvedNumbers = prefs.getStringList(_key) ?? <String>[];
+    final solvedSet = solvedNumbers.toSet()..add(puzzleNumber.toString());
+    final sortedNumbers = solvedSet.toList()
+      ..sort((first, second) => int.parse(first).compareTo(int.parse(second)));
+
+    await prefs.setStringList(_key, sortedNumbers);
+  }
+
+  Future<void> deleteData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
+}
+
 //TODO: In startup, it will create all [_Action] instance, we must handle it later
 class SharedPrefHelper {
   final onboarding = _Onboarding();
@@ -82,4 +110,5 @@ class SharedPrefHelper {
   final soundEnabled = const _BoolPreference('sound_enabled');
   final hapticsEnabled = const _BoolPreference('haptics_enabled');
   final locale = const _StringPreference('locale');
+  final solvedPuzzles = const _SolvedPuzzles();
 }

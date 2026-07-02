@@ -4,6 +4,7 @@ import 'package:example_template/common/widgets/arcade_widgets.dart';
 import 'package:example_template/data/game_scenarios.dart';
 import 'package:example_template/gen/i18n/locale.dart';
 import 'package:example_template/models/game_scenario.dart';
+import 'package:example_template/providers/local_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,9 +18,14 @@ class GameListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scenariosValue = ref.watch(gameScenariosProvider);
+    final solvedPuzzleNumbers =
+        ref.watch(solvedPuzzleNumbersProvider).asData?.value ?? const <int>{};
 
     return scenariosValue.when(
-      data: (scenarios) => _GameListContent(scenarios: scenarios),
+      data: (scenarios) => _GameListContent(
+        scenarios: scenarios,
+        solvedPuzzleNumbers: solvedPuzzleNumbers,
+      ),
       loading: () => const _GameListLoading(),
       error: (error, _) => _GameListError(
         message: error.toString(),
@@ -30,9 +36,13 @@ class GameListPage extends ConsumerWidget {
 }
 
 class _GameListContent extends StatelessWidget {
-  const _GameListContent({required this.scenarios});
+  const _GameListContent({
+    required this.scenarios,
+    required this.solvedPuzzleNumbers,
+  });
 
   final List<GameScenario> scenarios;
+  final Set<int> solvedPuzzleNumbers;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +51,15 @@ class _GameListContent extends StatelessWidget {
       ..sort(
         (first, second) => first.puzzleNumber.compareTo(second.puzzleNumber),
       );
-    final currentPuzzleNumber = sortedScenarios.first.puzzleNumber;
+    final currentPuzzleNumber = _currentPuzzleNumber(
+      sortedScenarios,
+      solvedPuzzleNumbers,
+    );
+    final solvedCount = sortedScenarios
+        .where(
+          (scenario) => solvedPuzzleNumbers.contains(scenario.puzzleNumber),
+        )
+        .length;
 
     return Scaffold(
       body: ArcadeBackdrop(
@@ -79,7 +97,7 @@ class _GameListContent extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         _ProgressStrip(
-                          solvedCount: 0,
+                          solvedCount: solvedCount,
                           totalCount: sortedScenarios.length,
                           nextPuzzleNumber: currentPuzzleNumber,
                         ),
@@ -97,13 +115,17 @@ class _GameListContent extends StatelessWidget {
                               ),
                           itemBuilder: (context, index) {
                             final scenario = sortedScenarios[index];
+                            final isSolved = solvedPuzzleNumbers.contains(
+                              scenario.puzzleNumber,
+                            );
 
                             return Center(
                               child: ArcadeLevelTile(
                                 number: scenario.puzzleNumber,
-                                state: index == 0
-                                    ? ArcadeLevelTileState.current
+                                state: isSolved
+                                    ? ArcadeLevelTileState.solved
                                     : ArcadeLevelTileState.available,
+                                starCount: isSolved ? 3 : 0,
                                 onPressed: () => context.push(
                                   AppRoutePaths.gameplayPuzzle(
                                     scenario.puzzleNumber,
@@ -139,6 +161,19 @@ class _GameListContent extends StatelessWidget {
 
   static String _formatNumber(String template, int number) {
     return template.replaceAll('{number}', number.toString());
+  }
+
+  static int _currentPuzzleNumber(
+    List<GameScenario> scenarios,
+    Set<int> solvedPuzzleNumbers,
+  ) {
+    final firstUnsolved = scenarios
+        .where(
+          (scenario) => !solvedPuzzleNumbers.contains(scenario.puzzleNumber),
+        )
+        .firstOrNull;
+
+    return firstUnsolved?.puzzleNumber ?? scenarios.last.puzzleNumber;
   }
 }
 

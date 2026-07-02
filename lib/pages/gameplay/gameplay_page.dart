@@ -10,6 +10,7 @@ import 'package:example_template/pages/gameplay/widgets/gameplay_controls.dart';
 import 'package:example_template/pages/gameplay/widgets/gameplay_header.dart';
 import 'package:example_template/pages/gameplay/widgets/gameplay_status.dart';
 import 'package:example_template/pages/gameplay/widgets/winning_overlay.dart';
+import 'package:example_template/providers/local_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -155,6 +156,7 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
   void _showWin() {
     if (!_showWinningLayer) {
       setState(() => _showWinningLayer = true);
+      _saveSolvedPuzzle(widget.scenario.puzzleNumber);
     }
   }
 
@@ -183,6 +185,13 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
         navigate();
       }
     });
+  }
+
+  Future<void> _saveSolvedPuzzle(int puzzleNumber) async {
+    await ref.read(localDataProvider).solvedPuzzles.add(puzzleNumber);
+    if (mounted) {
+      ref.invalidate(solvedPuzzleNumbersProvider);
+    }
   }
 
   int? _nextPuzzleNumber(List<GameScenario> scenarios, GameScenario scenario) {
