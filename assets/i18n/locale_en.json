@@ -22,6 +22,14 @@
     "subtitle": "Offline logic puzzles",
     "loading": "Loading"
   },
+  "onboarding": {
+    "title": "ZIGLOOM",
+    "headline": "Draw one path",
+    "description": "Start at 1. Connect numbers in order. Fill every square once.",
+    "startPuzzle": "Start Puzzle 1",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms"
+  },
   "gameList": {
     "title": "Select Level",
     "back": "Back",

@@ -22,6 +22,14 @@
     "subtitle": "Câu đố logic ngoại tuyến",
     "loading": "Đang tải"
   },
+  "onboarding": {
+    "title": "ZIGLOOM",
+    "headline": "Vẽ một đường đi",
+    "description": "Bắt đầu từ 1. Nối các số theo thứ tự. Dùng mỗi ô đúng một lần.",
+    "startPuzzle": "Bắt đầu màn 1",
+    "privacyPolicy": "Chính sách bảo mật",
+    "terms": "Điều khoản"
+  },
   "gameList": {
     "title": "Chọn màn",
     "back": "Quay lại",

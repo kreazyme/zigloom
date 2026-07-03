@@ -46,6 +46,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
 	late final TranslationsSplashEn splash = TranslationsSplashEn._(_root);
+	late final TranslationsOnboardingEn onboarding = TranslationsOnboardingEn._(_root);
 	late final TranslationsGameListEn gameList = TranslationsGameListEn._(_root);
 	late final TranslationsGameplayEn gameplay = TranslationsGameplayEn._(_root);
 	late final TranslationsPauseEn pause = TranslationsPauseEn._(_root);
@@ -123,6 +124,33 @@ class TranslationsSplashEn {
 
 	/// en: 'Loading'
 	String get loading => 'Loading';
+}
+
+// Path: onboarding
+class TranslationsOnboardingEn {
+	TranslationsOnboardingEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'ZIGLOOM'
+	String get title => 'ZIGLOOM';
+
+	/// en: 'Draw one path'
+	String get headline => 'Draw one path';
+
+	/// en: 'Start at 1. Connect numbers in order. Fill every square once.'
+	String get description => 'Start at 1. Connect numbers in order. Fill every square once.';
+
+	/// en: 'Start Puzzle 1'
+	String get startPuzzle => 'Start Puzzle 1';
+
+	/// en: 'Privacy Policy'
+	String get privacyPolicy => 'Privacy Policy';
+
+	/// en: 'Terms'
+	String get terms => 'Terms';
 }
 
 // Path: gameList
@@ -416,6 +444,12 @@ extension on Translations {
 			'splash.title' => 'ZIGLOOM',
 			'splash.subtitle' => 'Offline logic puzzles',
 			'splash.loading' => 'Loading',
+			'onboarding.title' => 'ZIGLOOM',
+			'onboarding.headline' => 'Draw one path',
+			'onboarding.description' => 'Start at 1. Connect numbers in order. Fill every square once.',
+			'onboarding.startPuzzle' => 'Start Puzzle 1',
+			'onboarding.privacyPolicy' => 'Privacy Policy',
+			'onboarding.terms' => 'Terms',
 			'gameList.title' => 'Select Level',
 			'gameList.back' => 'Back',
 			'gameList.pauseDemo' => 'Pause',

@@ -1,11 +1,11 @@
 {
-    "name": "example_template",
-    "short_name": "example_template",
+    "name": "Zigloom",
+    "short_name": "Zigloom",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
-    "description": "A new Flutter project.",
+    "description": "Zigloom is a web application that provides users with a seamless and engaging experience. It is designed to work offline and can be installed on your device for quick access.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

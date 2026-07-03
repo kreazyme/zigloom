@@ -40,6 +40,7 @@ class TranslationsVi with BaseTranslations<AppLocale, Translations> implements T
 	@override String get hello => 'Xin chào';
 	@override late final _TranslationsHomeVi home = _TranslationsHomeVi._(_root);
 	@override late final _TranslationsSplashVi splash = _TranslationsSplashVi._(_root);
+	@override late final _TranslationsOnboardingVi onboarding = _TranslationsOnboardingVi._(_root);
 	@override late final _TranslationsGameListVi gameList = _TranslationsGameListVi._(_root);
 	@override late final _TranslationsGameplayVi gameplay = _TranslationsGameplayVi._(_root);
 	@override late final _TranslationsPauseVi pause = _TranslationsPauseVi._(_root);
@@ -81,6 +82,21 @@ class _TranslationsSplashVi implements TranslationsSplashEn {
 	@override String get title => 'ZIGLOOM';
 	@override String get subtitle => 'Câu đố logic ngoại tuyến';
 	@override String get loading => 'Đang tải';
+}
+
+// Path: onboarding
+class _TranslationsOnboardingVi implements TranslationsOnboardingEn {
+	_TranslationsOnboardingVi._(this._root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'ZIGLOOM';
+	@override String get headline => 'Vẽ một đường đi';
+	@override String get description => 'Bắt đầu từ 1. Nối các số theo thứ tự. Dùng mỗi ô đúng một lần.';
+	@override String get startPuzzle => 'Bắt đầu màn 1';
+	@override String get privacyPolicy => 'Chính sách bảo mật';
+	@override String get terms => 'Điều khoản';
 }
 
 // Path: gameList
@@ -228,6 +244,12 @@ extension on TranslationsVi {
 			'splash.title' => 'ZIGLOOM',
 			'splash.subtitle' => 'Câu đố logic ngoại tuyến',
 			'splash.loading' => 'Đang tải',
+			'onboarding.title' => 'ZIGLOOM',
+			'onboarding.headline' => 'Vẽ một đường đi',
+			'onboarding.description' => 'Bắt đầu từ 1. Nối các số theo thứ tự. Dùng mỗi ô đúng một lần.',
+			'onboarding.startPuzzle' => 'Bắt đầu màn 1',
+			'onboarding.privacyPolicy' => 'Chính sách bảo mật',
+			'onboarding.terms' => 'Điều khoản',
 			'gameList.title' => 'Chọn màn',
 			'gameList.back' => 'Quay lại',
 			'gameList.pauseDemo' => 'Tạm dừng',
