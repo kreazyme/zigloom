@@ -3,6 +3,7 @@ import 'package:example_template/common/theme.dart';
 import 'package:example_template/gen/i18n/locale.dart';
 import 'package:example_template/helper/shared_pref_helper.dart';
 import 'package:example_template/providers/theme_provider.dart';
+import 'package:example_template/services/local_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,6 +32,8 @@ class _AppBootState extends ConsumerState<_AppBoot> {
   Future<void> _loadSettings() async {
     final settings = await loadAppSettings(SharedPrefHelper());
     await LocaleSettings.setLocale(settings.locale);
+    await LocalNotificationService.instance
+        .initializeAndScheduleDailyPlayReminder();
     if (!mounted) return;
 
     ref.read(appSettingsProvider.notifier).state = settings;
