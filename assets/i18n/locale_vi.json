@@ -15,6 +15,8 @@
     "puzzleOpen": "Màn {number} đang mở",
     "inProgress": "Màn {number} đang chơi",
     "allPuzzlesDone": "Đã hoàn thành tất cả",
+    "currentStreak": "Chuỗi {count} ngày",
+    "bestStreak": "Kỷ lục: {count}",
     "comingSoon": "{screen} sắp ra mắt"
   },
   "splash": {
@@ -53,6 +55,7 @@
     "winMessage": "Một đường đi hoàn chỉnh từ đầu đến cuối.",
     "winTime": "Thời gian",
     "winMoves": "Nước đi",
+    "winStreak": "Chuỗi",
     "nextLevel": "Màn tiếp",
     "chooseLevel": "Chọn màn",
     "playAgain": "Chơi lại",

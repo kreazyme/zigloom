@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:example_template/models/play_streak_stats.dart';
 
 abstract class _Action<T> {
   Future<void> saveData(T value);
@@ -103,6 +104,58 @@ class _SolvedPuzzles {
   }
 }
 
+class _PlayStreak {
+  const _PlayStreak();
+
+  static const _currentKey = 'play_streak.current';
+  static const _bestKey = 'play_streak.best';
+  static const _lastPlayedDateKey = 'play_streak.last_played_date';
+
+  Future<PlayStreakStats> getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lastPlayedDateValue = prefs.getString(_lastPlayedDateKey);
+
+    return PlayStreakStats(
+      currentStreak: prefs.getInt(_currentKey) ?? 0,
+      bestStreak: prefs.getInt(_bestKey) ?? 0,
+      lastPlayedDate: lastPlayedDateValue == null
+          ? null
+          : DateTime.tryParse(lastPlayedDateValue),
+    );
+  }
+
+  Future<PlayStreakStats> recordCompletion({DateTime? now}) async {
+    final stats = await getData();
+    final updatedStats = stats.recordCompletion(now ?? DateTime.now());
+    await _saveData(updatedStats);
+
+    return updatedStats;
+  }
+
+  Future<void> deleteData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_currentKey);
+    await prefs.remove(_bestKey);
+    await prefs.remove(_lastPlayedDateKey);
+  }
+
+  Future<void> _saveData(PlayStreakStats value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_currentKey, value.currentStreak);
+    await prefs.setInt(_bestKey, value.bestStreak);
+
+    final lastPlayedDate = value.lastPlayedDate;
+    if (lastPlayedDate == null) {
+      await prefs.remove(_lastPlayedDateKey);
+    } else {
+      await prefs.setString(
+        _lastPlayedDateKey,
+        lastPlayedDate.toIso8601String(),
+      );
+    }
+  }
+}
+
 //TODO: In startup, it will create all [_Action] instance, we must handle it later
 class SharedPrefHelper {
   final onboarding = _Onboarding();
@@ -111,4 +164,5 @@ class SharedPrefHelper {
   final hapticsEnabled = const _BoolPreference('haptics_enabled');
   final locale = const _StringPreference('locale');
   final solvedPuzzles = const _SolvedPuzzles();
+  final playStreak = const _PlayStreak();
 }

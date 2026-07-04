@@ -104,6 +104,12 @@ class TranslationsHomeEn {
 	/// en: 'All puzzles done'
 	String get allPuzzlesDone => 'All puzzles done';
 
+	/// en: '{count} day streak'
+	String get currentStreak => '{count} day streak';
+
+	/// en: 'Best: {count}'
+	String get bestStreak => 'Best: {count}';
+
 	/// en: '{screen} is coming soon'
 	String get comingSoon => '{screen} is coming soon';
 }
@@ -229,6 +235,9 @@ class TranslationsGameplayEn {
 
 	/// en: 'Moves'
 	String get winMoves => 'Moves';
+
+	/// en: 'Streak'
+	String get winStreak => 'Streak';
 
 	/// en: 'Next Level'
 	String get nextLevel => 'Next Level';
@@ -440,6 +449,8 @@ extension on Translations {
 			'home.puzzleOpen' => 'Puzzle {number} open',
 			'home.inProgress' => 'Puzzle {number} in progress',
 			'home.allPuzzlesDone' => 'All puzzles done',
+			'home.currentStreak' => '{count} day streak',
+			'home.bestStreak' => 'Best: {count}',
 			'home.comingSoon' => '{screen} is coming soon',
 			'splash.title' => 'ZIGLOOM',
 			'splash.subtitle' => 'Offline logic puzzles',
@@ -470,6 +481,7 @@ extension on Translations {
 			'gameplay.winMessage' => 'A perfect path from start to finish.',
 			'gameplay.winTime' => 'Time',
 			'gameplay.winMoves' => 'Moves',
+			'gameplay.winStreak' => 'Streak',
 			'gameplay.nextLevel' => 'Next Level',
 			'gameplay.chooseLevel' => 'Levels',
 			'gameplay.playAgain' => 'Replay',

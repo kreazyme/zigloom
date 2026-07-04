@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:example_template/common/theme.dart';
 import 'package:example_template/common/widgets/arcade_widgets.dart';
 import 'package:example_template/gen/i18n/locale.dart';
+import 'package:example_template/models/play_streak_stats.dart';
 import 'package:flutter/material.dart';
 
 class WinningOverlay extends StatefulWidget {
@@ -10,6 +11,7 @@ class WinningOverlay extends StatefulWidget {
     super.key,
     required this.time,
     required this.moves,
+    required this.streakStats,
     required this.nextPuzzleNumber,
     required this.onChooseLevel,
     required this.onReplay,
@@ -18,6 +20,7 @@ class WinningOverlay extends StatefulWidget {
 
   final String time;
   final int moves;
+  final PlayStreakStats? streakStats;
   final int? nextPuzzleNumber;
   final VoidCallback onChooseLevel;
   final VoidCallback onReplay;
@@ -152,20 +155,27 @@ class _WinningOverlayState extends State<WinningOverlay>
                                         ),
                                   ),
                                   const SizedBox(height: 18),
-                                  Row(
+                                  Wrap(
+                                    alignment: WrapAlignment.center,
+                                    spacing: 10,
+                                    runSpacing: 10,
                                     children: [
-                                      Expanded(
-                                        child: _WinStat(
-                                          label: strings.winTime,
-                                          value: widget.time,
-                                        ),
+                                      _WinStat(
+                                        label: strings.winTime,
+                                        value: widget.time,
                                       ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: _WinStat(
-                                          label: strings.winMoves,
-                                          value: widget.moves.toString(),
-                                        ),
+                                      _WinStat(
+                                        label: strings.winMoves,
+                                        value: widget.moves.toString(),
+                                      ),
+                                      _WinStat(
+                                        label: strings.winStreak,
+                                        value:
+                                            widget.streakStats?.currentStreak
+                                                .toString() ??
+                                            '-',
+                                        iconAsset:
+                                            'assets/images/icons/streak_badge.png',
                                       ),
                                     ],
                                   ),
@@ -236,48 +246,64 @@ class _WinMedal extends StatelessWidget {
 }
 
 class _WinStat extends StatelessWidget {
-  const _WinStat({required this.label, required this.value});
+  const _WinStat({required this.label, required this.value, this.iconAsset});
 
   final String label;
   final String value;
+  final String? iconAsset;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.white.withValues(alpha: 0.86),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: AppTheme.inkBlue.withValues(alpha: 0.16),
-          width: 1.5,
+    return SizedBox(
+      width: 118,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppTheme.white.withValues(alpha: 0.86),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppTheme.inkBlue.withValues(alpha: 0.16),
+            width: 1.5,
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
-        child: Column(
-          children: [
-            Text(
-              label.toUpperCase(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: AppTheme.blueDeep,
-                fontSize: 12,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
+          child: Column(
+            children: [
+              Text(
+                label.toUpperCase(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: AppTheme.blueDeep,
+                  fontSize: 12,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: AppTheme.inkBlue,
-                fontSize: 24,
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (iconAsset != null) ...[
+                    Image.asset(iconAsset!, width: 24, height: 24),
+                    const SizedBox(width: 4),
+                  ],
+                  Flexible(
+                    child: Text(
+                      value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: AppTheme.inkBlue,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

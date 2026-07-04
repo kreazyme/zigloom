@@ -1,25 +1,33 @@
 import 'package:example_template/common/app_router.dart';
 import 'package:example_template/common/theme.dart';
+import 'package:example_template/data/game_scenarios.dart';
 import 'package:example_template/gen/i18n/locale.dart';
+import 'package:example_template/models/game_scenario.dart';
+import 'package:example_template/models/play_streak_stats.dart';
+import 'package:example_template/providers/local_data_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
-  static const _progress = _HomeProgress(
-    solvedPuzzleCount: 12,
-    totalPuzzleCount: 120,
-    highestUnlockedPuzzleNumber: 13,
-    inProgressPuzzleNumber: null,
-    hasCompletedOnboarding: true,
-  );
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final strings = context.t.home;
-    final progress = _progress;
+    final scenarios =
+        ref.watch(gameScenariosProvider).asData?.value ?? const [];
+    final solvedPuzzleNumbers =
+        ref.watch(solvedPuzzleNumbersProvider).asData?.value ?? const <int>{};
+    final streakStats =
+        ref.watch(playStreakProvider).asData?.value ??
+        const PlayStreakStats.empty();
+    final progress = _HomeProgress.fromState(
+      scenarios: scenarios,
+      solvedPuzzleNumbers: solvedPuzzleNumbers,
+      streakStats: streakStats,
+    );
 
     return Scaffold(
       body: _HomeBackdrop(
@@ -65,22 +73,6 @@ class HomePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 26),
                             _ProgressPanel(progress: progress),
-                            if (progress.inProgressPuzzleNumber != null) ...[
-                              const SizedBox(height: 16),
-                              Text(
-                                _formatNumber(
-                                  strings.inProgress,
-                                  progress.inProgressPuzzleNumber!,
-                                ),
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  color: AppTheme.white,
-                                  shadows: theme
-                                      .extension<ZigloomGameTheme>()
-                                      ?.textShadow,
-                                ),
-                              ),
-                            ],
                             const SizedBox(height: 34),
                             _GlossyButton(
                               label: strings.play.toUpperCase(),
@@ -126,10 +118,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  static String _formatNumber(String template, int number) {
-    return template.replaceAll('{number}', number.toString());
-  }
 }
 
 class _HomeProgress {
@@ -137,17 +125,46 @@ class _HomeProgress {
     required this.solvedPuzzleCount,
     required this.totalPuzzleCount,
     required this.highestUnlockedPuzzleNumber,
-    this.inProgressPuzzleNumber,
-    this.hasCompletedOnboarding = true,
+    required this.streakStats,
   });
+
+  factory _HomeProgress.fromState({
+    required List<GameScenario> scenarios,
+    required Set<int> solvedPuzzleNumbers,
+    required PlayStreakStats streakStats,
+  }) {
+    final sortedScenarios = [...scenarios]
+      ..sort(
+        (first, second) => first.puzzleNumber.compareTo(second.puzzleNumber),
+      );
+    final solvedCount = sortedScenarios
+        .where(
+          (scenario) => solvedPuzzleNumbers.contains(scenario.puzzleNumber),
+        )
+        .length;
+    final firstUnsolved = sortedScenarios
+        .where(
+          (scenario) => !solvedPuzzleNumbers.contains(scenario.puzzleNumber),
+        )
+        .firstOrNull;
+    final nextPuzzleNumber =
+        firstUnsolved?.puzzleNumber ??
+        (sortedScenarios.isEmpty ? 1 : sortedScenarios.last.puzzleNumber);
+
+    return _HomeProgress(
+      solvedPuzzleCount: solvedCount,
+      totalPuzzleCount: sortedScenarios.length,
+      highestUnlockedPuzzleNumber: nextPuzzleNumber,
+      streakStats: streakStats,
+    );
+  }
 
   final int solvedPuzzleCount;
   final int totalPuzzleCount;
   final int highestUnlockedPuzzleNumber;
-  final int? inProgressPuzzleNumber;
-  final bool hasCompletedOnboarding;
+  final PlayStreakStats streakStats;
 
-  bool get isFirstTime => !hasCompletedOnboarding && solvedPuzzleCount == 0;
+  bool get isFirstTime => totalPuzzleCount == 0 && solvedPuzzleCount == 0;
   bool get isComplete => solvedPuzzleCount >= totalPuzzleCount;
 }
 
@@ -243,8 +260,6 @@ class _ProgressPanel extends StatelessWidget {
         ? _formatNumber(strings.puzzleNumber, 1)
         : progress.isComplete
         ? strings.allPuzzlesDone
-        : progress.inProgressPuzzleNumber != null
-        ? _formatNumber(strings.puzzleOpen, progress.inProgressPuzzleNumber!)
         : _formatNumber(
             strings.nextPuzzle,
             progress.highestUnlockedPuzzleNumber,
@@ -281,6 +296,8 @@ class _ProgressPanel extends StatelessWidget {
               shadows: gameTheme.textShadow,
             ),
           ),
+          const SizedBox(height: 14),
+          _StreakSummary(streakStats: progress.streakStats),
         ],
       ),
     );
@@ -288,6 +305,73 @@ class _ProgressPanel extends StatelessWidget {
 
   static String _formatNumber(String template, int number) {
     return template.replaceAll('{number}', number.toString());
+  }
+}
+
+class _StreakSummary extends StatelessWidget {
+  const _StreakSummary({required this.streakStats});
+
+  static const _streakBadgeAsset = 'assets/images/icons/streak_badge.png';
+
+  final PlayStreakStats streakStats;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = context.t.home;
+    final theme = Theme.of(context);
+    final gameTheme = theme.extension<ZigloomGameTheme>()!;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppTheme.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: AppTheme.white.withValues(alpha: 0.32),
+          width: 1.5,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+        child: Row(
+          children: [
+            Image.asset(_streakBadgeAsset, width: 42, height: 42),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    strings.currentStreak.replaceAll(
+                      '{count}',
+                      streakStats.currentStreak.toString(),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppTheme.white,
+                      shadows: gameTheme.textShadow,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    strings.bestStreak.replaceAll(
+                      '{count}',
+                      streakStats.bestStreak.toString(),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.cyanPale,
+                      shadows: gameTheme.textShadow,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

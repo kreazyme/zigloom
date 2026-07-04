@@ -69,6 +69,8 @@ class _TranslationsHomeVi implements TranslationsHomeEn {
 	@override String get puzzleOpen => 'Màn {number} đang mở';
 	@override String get inProgress => 'Màn {number} đang chơi';
 	@override String get allPuzzlesDone => 'Đã hoàn thành tất cả';
+	@override String get currentStreak => 'Chuỗi {count} ngày';
+	@override String get bestStreak => 'Kỷ lục: {count}';
 	@override String get comingSoon => '{screen} sắp ra mắt';
 }
 
@@ -135,6 +137,7 @@ class _TranslationsGameplayVi implements TranslationsGameplayEn {
 	@override String get winMessage => 'Một đường đi hoàn chỉnh từ đầu đến cuối.';
 	@override String get winTime => 'Thời gian';
 	@override String get winMoves => 'Nước đi';
+	@override String get winStreak => 'Chuỗi';
 	@override String get nextLevel => 'Màn tiếp';
 	@override String get chooseLevel => 'Chọn màn';
 	@override String get playAgain => 'Chơi lại';
@@ -240,6 +243,8 @@ extension on TranslationsVi {
 			'home.puzzleOpen' => 'Màn {number} đang mở',
 			'home.inProgress' => 'Màn {number} đang chơi',
 			'home.allPuzzlesDone' => 'Đã hoàn thành tất cả',
+			'home.currentStreak' => 'Chuỗi {count} ngày',
+			'home.bestStreak' => 'Kỷ lục: {count}',
 			'home.comingSoon' => '{screen} sắp ra mắt',
 			'splash.title' => 'ZIGLOOM',
 			'splash.subtitle' => 'Câu đố logic ngoại tuyến',
@@ -270,6 +275,7 @@ extension on TranslationsVi {
 			'gameplay.winMessage' => 'Một đường đi hoàn chỉnh từ đầu đến cuối.',
 			'gameplay.winTime' => 'Thời gian',
 			'gameplay.winMoves' => 'Nước đi',
+			'gameplay.winStreak' => 'Chuỗi',
 			'gameplay.nextLevel' => 'Màn tiếp',
 			'gameplay.chooseLevel' => 'Chọn màn',
 			'gameplay.playAgain' => 'Chơi lại',

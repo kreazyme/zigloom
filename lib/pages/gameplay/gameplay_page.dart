@@ -4,6 +4,7 @@ import 'package:example_template/common/widgets/arcade_widgets.dart';
 import 'package:example_template/data/game_scenarios.dart';
 import 'package:example_template/gen/i18n/locale.dart';
 import 'package:example_template/models/game_scenario.dart';
+import 'package:example_template/models/play_streak_stats.dart';
 import 'package:example_template/pages/gameplay/gameplay_controller.dart';
 import 'package:example_template/pages/gameplay/widgets/gameplay_board.dart';
 import 'package:example_template/pages/gameplay/widgets/gameplay_controls.dart';
@@ -49,6 +50,7 @@ class _GameplayContent extends ConsumerStatefulWidget {
 
 class _GameplayContentState extends ConsumerState<_GameplayContent> {
   bool _showWinningLayer = false;
+  PlayStreakStats? _winStreakStats;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +139,7 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
               WinningOverlay(
                 time: _formatTime(controller.elapsed),
                 moves: controller.moveCount,
+                streakStats: _winStreakStats,
                 nextPuzzleNumber: nextPuzzleNumber,
                 onNextLevel: nextPuzzleNumber == null
                     ? null
@@ -162,7 +165,10 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
 
   void _hideWin() {
     if (_showWinningLayer) {
-      setState(() => _showWinningLayer = false);
+      setState(() {
+        _showWinningLayer = false;
+        _winStreakStats = null;
+      });
     }
   }
 
@@ -189,8 +195,14 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
 
   Future<void> _saveSolvedPuzzle(int puzzleNumber) async {
     await ref.read(localDataProvider).solvedPuzzles.add(puzzleNumber);
+    final streakStats = await ref
+        .read(localDataProvider)
+        .playStreak
+        .recordCompletion();
     if (mounted) {
+      setState(() => _winStreakStats = streakStats);
       ref.invalidate(solvedPuzzleNumbersProvider);
+      ref.invalidate(playStreakProvider);
     }
   }
 
