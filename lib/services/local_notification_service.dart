@@ -42,7 +42,7 @@ class LocalNotificationService {
     );
     const windowsSettings = WindowsInitializationSettings(
       appName: 'Zigloom',
-      appUserModelId: 'com.example.example_template',
+      appUserModelId: 'spoon.app.zigloom',
       guid: '9e17d996-7bf5-4f1b-8d7f-105a93c31a77',
     );
     const settings = InitializationSettings(

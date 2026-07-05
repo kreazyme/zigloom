@@ -1,4 +1,4 @@
-package com.example.example_template
+package spoon.app.zigloom
 
 import io.flutter.embedding.android.FlutterActivity
 
