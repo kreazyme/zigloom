@@ -14,6 +14,7 @@ import 'package:example_template/pages/gameplay/widgets/winning_overlay.dart';
 import 'package:example_template/providers/local_data_provider.dart';
 import 'package:example_template/providers/theme_provider.dart';
 import 'package:example_template/services/gameplay_haptics.dart';
+import 'package:example_template/services/gameplay_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,6 +63,7 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
         ref.watch(gameScenariosProvider).asData?.value ?? const [];
     final nextPuzzleNumber = _nextPuzzleNumber(scenarios, scenario);
     final hapticsEnabled = ref.watch(appSettingsProvider).hapticsEnabled;
+    final soundEnabled = ref.watch(appSettingsProvider).soundEnabled;
     final strings = context.t.gameplay;
 
     return Scaffold(
@@ -112,10 +114,16 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
                               GameplayBoard(
                                 scenario: scenario,
                                 controller: controller,
-                                onMoveResult: (result) => _playMoveHaptic(
-                                  result,
-                                  hapticsEnabled: hapticsEnabled,
-                                ),
+                                onMoveResult: (result) {
+                                  _playMoveHaptic(
+                                    result,
+                                    hapticsEnabled: hapticsEnabled,
+                                  );
+                                  _playMoveSound(
+                                    result,
+                                    soundEnabled: soundEnabled,
+                                  );
+                                },
                                 onSolved: _showWin,
                               ),
                             const SizedBox(height: 18),
@@ -196,6 +204,23 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
 
   void _playResetHaptic({required bool hapticsEnabled}) {
     ref.read(gameplayHapticsProvider).puzzleReset(enabled: hapticsEnabled);
+  }
+
+  void _playMoveSound(GameplayMoveResult result, {required bool soundEnabled}) {
+    final sounds = ref.read(gameplaySoundsProvider);
+
+    switch (result) {
+      case GameplayMoveResult.reachedNumberedClue:
+        sounds.numberedClueReached(enabled: soundEnabled);
+      case GameplayMoveResult.invalid:
+        sounds.invalidMove(enabled: soundEnabled);
+      case GameplayMoveResult.solved:
+        sounds.puzzleSolved(enabled: soundEnabled);
+      case GameplayMoveResult.ignored:
+      case GameplayMoveResult.moved:
+      case GameplayMoveResult.trimmed:
+        break;
+    }
   }
 
   void _hideWin() {
