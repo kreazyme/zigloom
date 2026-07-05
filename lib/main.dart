@@ -54,7 +54,7 @@ class MyApp extends ConsumerWidget {
     final settings = ref.watch(appSettingsProvider);
 
     return MaterialApp.router(
-      title: 'Example Template',
+      title: 'Zigloom',
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: [...GlobalMaterialLocalizations.delegates],

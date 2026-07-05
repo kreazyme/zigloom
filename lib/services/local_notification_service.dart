@@ -35,7 +35,7 @@ class LocalNotificationService {
 
     await _configureLocalTimezone();
 
-    const androidSettings = AndroidInitializationSettings('launcher_icon');
+    const androidSettings = AndroidInitializationSettings('notification_icon');
     const darwinSettings = DarwinInitializationSettings();
     const linuxSettings = LinuxInitializationSettings(
       defaultActionName: 'Open notification',

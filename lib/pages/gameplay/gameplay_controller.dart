@@ -12,8 +12,19 @@ final gameplayControllerProvider =
       isAutoDispose: true,
     );
 
+enum GameplayMoveResult {
+  ignored,
+  moved,
+  reachedNumberedClue,
+  invalid,
+  trimmed,
+  solved,
+}
+
 class GameplayController extends ChangeNotifier {
-  GameplayController(this.scenario) : _path = [scenario.start];
+  GameplayController(this.scenario, {bool isLoadingProgress = true})
+    : _path = [scenario.start],
+      _isLoadingProgress = isLoadingProgress;
 
   final GameScenario scenario;
 
@@ -25,7 +36,7 @@ class GameplayController extends ChangeNotifier {
   int _invalidPulse = 0;
   GridPoint? _invalidPoint;
   bool _isSolved = false;
-  bool _isLoadingProgress = true;
+  bool _isLoadingProgress;
   bool _isDisposed = false;
 
   List<GridPoint> get path => List.unmodifiable(_path);
@@ -96,19 +107,19 @@ class GameplayController extends ChangeNotifier {
     _timer?.cancel();
   }
 
-  bool extendPath(GridPoint point) {
+  GameplayMoveResult extendPath(GridPoint point) {
     if (_isLoadingProgress || point == _path.last) {
-      return false;
+      return GameplayMoveResult.ignored;
     }
 
     final selectedIndex = _path.indexOf(point);
     if (selectedIndex != -1) {
       _trimPathTo(selectedIndex);
-      return false;
+      return GameplayMoveResult.trimmed;
     }
 
     if (_isSolved) {
-      return false;
+      return GameplayMoveResult.ignored;
     }
 
     final last = _path.last;
@@ -119,10 +130,14 @@ class GameplayController extends ChangeNotifier {
         _isNumberMoveAllowed(point);
 
     if (!isValid) {
+      if (_invalidPoint == point) {
+        return GameplayMoveResult.ignored;
+      }
       _flashInvalid(point);
-      return false;
+      return GameplayMoveResult.invalid;
     }
 
+    final reachedNumberedClue = scenario.numberAt(point) != null;
     _invalidPoint = null;
     _path = [..._path, point];
     _moveCount += 1;
@@ -132,9 +147,12 @@ class GameplayController extends ChangeNotifier {
 
     if (_isSolved) {
       pauseTimer();
+      return GameplayMoveResult.solved;
     }
 
-    return _isSolved;
+    return reachedNumberedClue
+        ? GameplayMoveResult.reachedNumberedClue
+        : GameplayMoveResult.moved;
   }
 
   void _trimPathTo(int selectedIndex) {

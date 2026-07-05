@@ -12,6 +12,8 @@ import 'package:example_template/pages/gameplay/widgets/gameplay_header.dart';
 import 'package:example_template/pages/gameplay/widgets/gameplay_status.dart';
 import 'package:example_template/pages/gameplay/widgets/winning_overlay.dart';
 import 'package:example_template/providers/local_data_provider.dart';
+import 'package:example_template/providers/theme_provider.dart';
+import 'package:example_template/services/gameplay_haptics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -59,6 +61,7 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
     final scenarios =
         ref.watch(gameScenariosProvider).asData?.value ?? const [];
     final nextPuzzleNumber = _nextPuzzleNumber(scenarios, scenario);
+    final hapticsEnabled = ref.watch(appSettingsProvider).hapticsEnabled;
     final strings = context.t.gameplay;
 
     return Scaffold(
@@ -109,6 +112,10 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
                               GameplayBoard(
                                 scenario: scenario,
                                 controller: controller,
+                                onMoveResult: (result) => _playMoveHaptic(
+                                  result,
+                                  hapticsEnabled: hapticsEnabled,
+                                ),
                                 onSolved: _showWin,
                               ),
                             const SizedBox(height: 18),
@@ -122,6 +129,9 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
                                   ? () {
                                       _hideWin();
                                       controller.reset();
+                                      _playResetHaptic(
+                                        hapticsEnabled: hapticsEnabled,
+                                      );
                                     }
                                   : null,
                               onHowToPlay: () =>
@@ -148,6 +158,7 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
                 onReplay: () {
                   _hideWin();
                   controller.reset();
+                  _playResetHaptic(hapticsEnabled: hapticsEnabled);
                 },
               ),
           ],
@@ -161,6 +172,30 @@ class _GameplayContentState extends ConsumerState<_GameplayContent> {
       setState(() => _showWinningLayer = true);
       _saveSolvedPuzzle(widget.scenario.puzzleNumber);
     }
+  }
+
+  void _playMoveHaptic(
+    GameplayMoveResult result, {
+    required bool hapticsEnabled,
+  }) {
+    final haptics = ref.read(gameplayHapticsProvider);
+
+    switch (result) {
+      case GameplayMoveResult.reachedNumberedClue:
+        haptics.numberedClueReached(enabled: hapticsEnabled);
+      case GameplayMoveResult.invalid:
+        haptics.invalidMove(enabled: hapticsEnabled);
+      case GameplayMoveResult.solved:
+        haptics.puzzleSolved(enabled: hapticsEnabled);
+      case GameplayMoveResult.ignored:
+      case GameplayMoveResult.moved:
+      case GameplayMoveResult.trimmed:
+        break;
+    }
+  }
+
+  void _playResetHaptic({required bool hapticsEnabled}) {
+    ref.read(gameplayHapticsProvider).puzzleReset(enabled: hapticsEnabled);
   }
 
   void _hideWin() {

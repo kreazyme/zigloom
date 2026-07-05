@@ -5,17 +5,26 @@ import 'package:example_template/models/game_scenario.dart';
 import 'package:example_template/pages/gameplay/gameplay_controller.dart';
 import 'package:flutter/material.dart';
 
-class GameplayBoard extends StatelessWidget {
+class GameplayBoard extends StatefulWidget {
   const GameplayBoard({
     super.key,
     required this.scenario,
     required this.controller,
+    required this.onMoveResult,
     required this.onSolved,
   });
 
   final GameScenario scenario;
   final GameplayController controller;
+  final ValueChanged<GameplayMoveResult> onMoveResult;
   final VoidCallback onSolved;
+
+  @override
+  State<GameplayBoard> createState() => _GameplayBoardState();
+}
+
+class _GameplayBoardState extends State<GameplayBoard> {
+  GridPoint? _lastDragPoint;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +33,8 @@ class GameplayBoard extends StatelessWidget {
         final boardSize = constraints.maxWidth.clamp(280.0, 500.0);
         final gap = boardSize < 340 ? 1.5 : 2.0;
         final cellSize =
-            (boardSize - gap * (scenario.columnCount - 1)) /
-            scenario.columnCount;
+            (boardSize - gap * (widget.scenario.columnCount - 1)) /
+            widget.scenario.columnCount;
 
         return Center(
           child: DecoratedBox(
@@ -51,25 +60,32 @@ class GameplayBoard extends StatelessWidget {
                     cellSize,
                     gap,
                   ),
-                  onPanStart: (details) => _selectFromOffset(
-                    context,
-                    details.localPosition,
-                    cellSize,
-                    gap,
-                  ),
+                  onPanStart: (details) {
+                    _lastDragPoint = null;
+                    _selectFromOffset(
+                      context,
+                      details.localPosition,
+                      cellSize,
+                      gap,
+                      isDragUpdate: true,
+                    );
+                  },
                   onPanUpdate: (details) => _selectFromOffset(
                     context,
                     details.localPosition,
                     cellSize,
                     gap,
+                    isDragUpdate: true,
                   ),
+                  onPanEnd: (_) => _lastDragPoint = null,
+                  onPanCancel: () => _lastDragPoint = null,
                   child: Stack(
                     children: [
                       CustomPaint(
                         size: Size.square(boardSize),
                         painter: _BoardGridPainter(
-                          rowCount: scenario.rowCount,
-                          columnCount: scenario.columnCount,
+                          rowCount: widget.scenario.rowCount,
+                          columnCount: widget.scenario.columnCount,
                           cellSize: cellSize,
                           gap: gap,
                         ),
@@ -77,33 +93,33 @@ class GameplayBoard extends StatelessWidget {
                       CustomPaint(
                         size: Size.square(boardSize),
                         painter: _PathPainter(
-                          path: controller.path,
+                          path: widget.controller.path,
                           cellSize: cellSize,
                           gap: gap,
-                          isSolved: controller.isSolved,
+                          isSolved: widget.controller.isSolved,
                         ),
                       ),
                       GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: scenario.columnCount,
+                          crossAxisCount: widget.scenario.columnCount,
                           mainAxisSpacing: gap,
                           crossAxisSpacing: gap,
                         ),
-                        itemCount: scenario.cellCount,
+                        itemCount: widget.scenario.cellCount,
                         itemBuilder: (context, index) {
                           final point = GridPoint(
-                            index ~/ scenario.columnCount,
-                            index % scenario.columnCount,
+                            index ~/ widget.scenario.columnCount,
+                            index % widget.scenario.columnCount,
                           );
-                          final number = scenario.numberAt(point);
+                          final number = widget.scenario.numberAt(point);
 
                           return BoardCell(
                             number: number,
-                            isHead: controller.path.last == point,
-                            isInvalid: controller.invalidPoint == point,
-                            invalidPulse: controller.invalidPulse,
-                            isSolved: controller.isSolved,
+                            isHead: widget.controller.path.last == point,
+                            isInvalid: widget.controller.invalidPoint == point,
+                            invalidPulse: widget.controller.invalidPulse,
+                            isSolved: widget.controller.isSolved,
                           );
                         },
                       ),
@@ -122,8 +138,9 @@ class GameplayBoard extends StatelessWidget {
     BuildContext context,
     Offset offset,
     double cellSize,
-    double gap,
-  ) {
+    double gap, {
+    bool isDragUpdate = false,
+  }) {
     final column = offset.dx ~/ (cellSize + gap);
     final row = offset.dy ~/ (cellSize + gap);
     final localX = offset.dx - column * (cellSize + gap);
@@ -134,14 +151,25 @@ class GameplayBoard extends StatelessWidget {
         localX > cellSize ||
         localY > cellSize ||
         row < 0 ||
-        row >= scenario.rowCount ||
+        row >= widget.scenario.rowCount ||
         column < 0 ||
-        column >= scenario.columnCount) {
+        column >= widget.scenario.columnCount) {
       return;
     }
 
-    if (controller.extendPath(GridPoint(row, column))) {
-      onSolved();
+    final point = GridPoint(row, column);
+    if (isDragUpdate && point == _lastDragPoint) {
+      return;
+    }
+    if (isDragUpdate) {
+      _lastDragPoint = point;
+    }
+
+    final result = widget.controller.extendPath(point);
+    widget.onMoveResult(result);
+
+    if (result == GameplayMoveResult.solved) {
+      widget.onSolved();
     }
   }
 }
