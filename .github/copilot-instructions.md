@@ -71,22 +71,13 @@ class User {
 - **Layout:** `LayoutBuilder` for responsiveness. `OverlayPortal` for popups.
 - **Components:** Use `ThemeExtension` for custom tokens (colors/sizes).
 
-## Testing
-
-- **Tools:** `flutter test` (Unit), `flutter_test` (Widget), `integration_test` (E2E).
-- **Mocks:** Prefer Fakes. Use `mockito` sparingly.
-- **Pattern:** Arrange-Act-Assert.
-- **Assertions:** Use `package:checks`.
-
 ## Accessibility (A11Y)
 
 - **Contrast:** 4.5:1 minimum for text.
 - **Semantics:** Label all interactive elements specifically.
-- **Scale:** Test dynamic font sizes (up to 200%).
 - **Screen Readers:** Verify with TalkBack/VoiceOver.
 
 ## Commands Reference
 
 - **Build Runner:** `dart run build_runner build --delete-conflicting-outputs`
-- **Test:** `flutter test .`
 - **Analyze:** `flutter analyze .`
