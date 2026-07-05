@@ -7,76 +7,66 @@ class PolicyPage extends StatelessWidget {
   static const String _markdownContent = '''
 # Privacy Policy
 
-**Last updated: February 18, 2026**
+**Effective date: July 5, 2026**
 
-## Introduction
+## Overview
 
-Welcome to Example Template. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data and tell you about your privacy rights.
+Zigloom is an offline logic puzzle game. The app is designed to work without an account, without online leaderboards, without advertising, and without analytics.
 
-## Information We Collect
+This Privacy Policy explains what data Zigloom stores locally on your device and how that data is used.
 
-### Personal Information
-We may collect the following types of personal information:
-- Name and contact information
-- Email address
-- Usage data and analytics
-- Device information
+## Data Stored on This Device
 
-### Automatically Collected Information
-When you use our application, we automatically collect:
-- Log data
-- Device identifiers
-- Location data (with your permission)
-- App usage statistics
+Zigloom stores gameplay progress and preferences locally so the app can remember your play state. This may include:
+- Onboarding completion
+- Solved puzzle numbers
+- In-progress puzzle paths
+- Elapsed time, move counts, and undo counts for in-progress puzzles
+- Current streak, best streak, and last played date
+- Theme, language, sound, and haptics preferences
 
-## How We Use Your Information
+This data is stored on your device using the platform's local app storage.
 
-We use the information we collect to:
-- Provide and maintain our service
-- Notify you about changes to our service
-- Provide customer support
-- Monitor the usage of our service
-- Detect, prevent and address technical issues
-- Improve user experience
+## Notifications and Time Zone
 
-## Data Storage and Security
+Zigloom may ask for permission to send a daily play reminder. If you allow notifications, the app uses your device's local time zone to schedule the reminder at the right local time.
 
-We implement appropriate technical and organizational security measures to protect your personal data. Your data is stored securely using industry-standard encryption protocols.
+Notification permission and scheduling are handled by your device operating system. You can change notification permissions in your device settings.
 
-### Data Retention
-We will retain your personal data only for as long as necessary for the purposes set out in this Privacy Policy.
+## Data We Do Not Collect
 
-## Your Rights
+Zigloom does not currently collect:
+- Names, email addresses, or account information
+- Payment information
+- Advertising identifiers
+- Location data
+- Analytics events
+- User-generated content
+- Puzzle progress on a server
 
-You have the right to:
-- Access your personal data
-- Correct inaccurate data
-- Request deletion of your data
-- Object to processing of your data
-- Request data portability
-- Withdraw consent
+## Sharing
 
-## Third-Party Services
+Because Zigloom stores progress locally and does not use accounts, analytics, ads, or online leaderboards, we do not sell, rent, or share your personal data with third parties.
 
-Our application may contain links to third-party services. We are not responsible for the privacy practices of these third parties.
+## Data Deletion
+
+You can delete Zigloom's local data by deleting the app or clearing the app's data through your device settings. This may remove puzzle progress, streaks, in-progress paths, and preferences.
 
 ## Children's Privacy
 
-Our service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13.
+Zigloom is a general puzzle game and does not knowingly collect personal information from children.
 
-## Changes to This Privacy Policy
+## Changes to This Policy
 
-We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+We may update this Privacy Policy in a future app release. The updated policy will be shown in the app with a new effective date.
 
-## Contact Us
+## Contact
 
-If you have any questions about this Privacy Policy, please contact us:
-- By email: privacy@example.com
-- By visiting our website: https://example.com/contact
+If you have questions about this Privacy Policy, please contact us at email: spoon.me.dev@gmail.com
 
 ---
 
-© 2026 Example Template. All rights reserved.
+© 2026 Zigloom. All rights reserved.
 ''';
 
   @override
